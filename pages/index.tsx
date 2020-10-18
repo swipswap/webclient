@@ -1,9 +1,25 @@
+import { useState, useEffect} from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { generateRandom } from '../scripts'
 
 export default function Home() {
+  const [randomNumber, setRandomNumber] = useState(undefined)
+
+  useEffect(() => {
+    const newNumber = generateRandom()
+    setRandomNumber(newNumber)
+  }, [])
+  
   return (
-    <div className={styles.container}>
+    <div className="container mx-auto">
+      <div className="w-2/4 mx-auto">
+        {
+          randomNumber ? <p className="ml-5 p-4">
+            if you can see the random hash <b>{randomNumber}</b> typescript is working </p> : null
+        }
+        <p className="w-2/4 mx-auto">If this is centralized, tailwind is working</p>
+      </div>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
