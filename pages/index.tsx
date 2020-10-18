@@ -18,7 +18,7 @@ export default function Home() {
           randomNumber ? <p className="ml-5 p-4">
             if you can see the random hash <b>{randomNumber}</b> typescript is working </p> : null
         }
-        <p className="w-2/4 mx-auto">If this is centralized, tailwind is working</p>
+        <p className="w-2/4 mx-auto">If this is centralized, tailwind is working!</p>
       </div>
       <Head>
         <title>Create Next App</title>
