@@ -7,8 +7,9 @@ const deployPool = async ({ linkSeedAmount }) => {
     if (agreedToFundPoolWithLINK) {
       const result = await deployNewPool({ linkSeedAmount })
       console.log(result)
-      return 
+      return
     }
+    return
   }
   alert('You need to specify amount of LINK you want to seed to the new pool')
 }

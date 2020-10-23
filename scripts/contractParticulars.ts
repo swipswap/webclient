@@ -1,5 +1,5 @@
-import SwipSwapPool from '../../contracts/build/contracts/SwipSwapPool.json'
-import Token from '../../contracts/build/contracts/Token.json'
+import SwipSwapPool from './contracts/SwipSwapPool.json'
+import Token from './contracts/Token.json'
 
 export const SwipSwapPoolABI = SwipSwapPool.abi
 export const SwipSwapPoolBytecode = SwipSwapPool.bytecode

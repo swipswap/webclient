@@ -31,8 +31,7 @@ export const deployNewPool = async ({ linkSeedAmount }) => {
     const newPool = await newPoolFactory.deploy()
   
     const chainlinkToken = new Contract(ChainlinkTokenAddress, TokenABI, Provider)
-    console.log(utils.parseEther('20'))
-    // const seedingApproval = await chainlinkToken.transfer(newPool.address, utils.parseEther(`${linkSeedAmount}`))
+    const seedingApproval = await chainlinkToken.transfer(newPool.address, utils.parseEther(`${linkSeedAmount}`))
     await seedingApproval.wait()
 
     console.log(utils.parseEther(`${linkSeedAmount}`))
