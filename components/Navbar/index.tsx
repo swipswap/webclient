@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { updateStateItem } from './handlers'
 
-import { 
-  connectMetamask, 
-  getAddress, 
-} from '../../scripts/ethereum'
+// import { 
+//   connectMetamask, 
+//   getAddress, 
+// } from '../../scripts/ethereum'
 import { toast } from 'react-toastify';
 
 
@@ -14,13 +14,13 @@ export default function Navbar() {
   })
 
 	const handleConnect = async () => {
-		const isConnected = await connectMetamask()
-		if(isConnected){
-			const address = await getAddress()
-			setNavbarProperties(updateStateItem({ item: 'ethAddress', newValue: `${address.slice(0,6)}...${address.slice(38, 42)}`, prevState: navbarProperties }))
-      console.log('connected to metamask')
-		}
-		toast.error("Error connecting to your wallet")
+		// const isConnected = await connectMetamask()
+		// if(isConnected){
+		// 	const address = await getAddress()
+		// 	setNavbarProperties(updateStateItem({ item: 'ethAddress', newValue: `${address.slice(0,6)}...${address.slice(38, 42)}`, prevState: navbarProperties }))
+    //   console.log('connected to metamask')
+		// }
+		// toast.error("Error connecting to your wallet")
 	}
 
 	return (

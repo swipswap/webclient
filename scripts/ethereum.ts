@@ -1,40 +1,49 @@
+import Onboard from "bnc-onboard";
 import { ethers } from 'ethers'
-import { LinkTokenABI, SwipSwapPoolABI } from './ABIs'
 
-export const SwipSwapPoolAddress = '0xBbb238426c83Db9f21A03541FDEeEfe50d63E960'
-export const ChainlinkTokenAddress = '0x87AE97F105Eba72E3B26dBB27B09bDE5943Df2bD'
+// import { LinkTokenABI, SwipSwapPoolABI } from './ABIs'
 
-let Provider: ethers.providers.Web3Provider
-let Signer: ethers.Signer
-let walletConnected = false
+const dappId = "f55de6cc-5d4a-4115-b773-f6dde3bbf817";
+const networkId = 5777;
 
-export const getSigner = async () => {
-  const win: any = window
-  Provider = new ethers.providers.Web3Provider(win.ethereum)
-  Signer = Provider.getSigner()
-}
+export default class ETHAPI{
+  provider: ethers.providers.Web3Provider;
+  ob;
+  connected: boolean;
 
-export const connectMetamask = async () => {
-  const win: any = window
-    if(win.ethereum){
-        try {
-            await win.ethereum.request({ method: 'eth_requestAccounts' });
-            await getSigner()
-            walletConnected = true
-            return true
-        } catch (error) {
-            console.log(error)
-        }
+  onboard(){
+    if (!this.ob){
+      this.ob = Onboard({
+        dappId,
+        hideBranding: true,
+        networkId,
+        subscriptions: {
+          wallet: (wallet) => {
+            this.provider = new ethers.providers.Web3Provider(wallet.provider);
+          },
+        },
+        walletCheck: []
+      });
     }
-  return false
-}
+    return this.ob;
+  }
 
-export const getAddress = async () => {
-  try {
-    await getSigner()
-    const address = await Signer.getAddress()
-      return  address
-  } catch (error) {
-      return ""
+  async connect(){
+    await this.onboard().walletSelect()
+    this.connected = this.onboard().walletCheck()
+  }
+
+  isConnected(){
+    return !!this.provider && !!this.ob
+  }
+
+  async getSigner() {
+    return this.provider.getSigner()
+  }
+  
+  async getAddress() {
+    return await (await this.getSigner()).getAddress()
   }
 }
+
+export const ethAPI = new ETHAPI()
