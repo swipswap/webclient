@@ -1,6 +1,7 @@
 import { useState } from "react"
 import {handleApprove, handleChange, handleConnect, handleSubmitPool} from "../components/handlers"
 import RenderFormFields from "../components/RenderFormFields"
+import { PoolState } from '../components/typeDefinitions'
 const formFields = (state, setState) => [
     {
         placeholder: "Currency",
@@ -42,9 +43,7 @@ const formFields = (state, setState) => [
 ]
 
 
-
-
-const initialState = {
+const initialState: PoolState = {
     amount: 0,
     address: "0x9E237f4a7AD90FfAFB0adEf703186F91428a6a38",
     pubkey: ""
