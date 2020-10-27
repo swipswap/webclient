@@ -1,4 +1,4 @@
-import { tokenABI, erc20TokenABI } from "../../scripts/ABIs"
+import { erc20TokenABI } from "../../scripts/ABIs"
 import { ethAPI } from "../../scripts/ethereum"
 import { PoolState } from '../typeDefinitions'
 
