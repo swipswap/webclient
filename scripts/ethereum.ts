@@ -1,5 +1,5 @@
-import Onboard from "bnc-onboard";
-import { ethers } from 'ethers'
+import Onboard from 'bnc-onboard';
+import { ethers, Contract } from 'ethers'
 
 // import { LinkTokenABI, SwipSwapPoolABI } from './ABIs'
 
@@ -22,7 +22,13 @@ export default class ETHAPI{
             this.provider = new ethers.providers.Web3Provider(wallet.provider);
           },
         },
-        walletCheck: []
+        walletCheck: [
+          {
+            checkName: 'accounts'
+          },
+          { checkName: 'connect' },
+          { checkName: 'balance' }
+        ]
       });
     }
     return this.ob;
@@ -30,19 +36,41 @@ export default class ETHAPI{
 
   async connect(){
     await this.onboard().walletSelect()
-    this.connected = this.onboard().walletCheck()
+    this.connected = await this.onboard().walletCheck()
   }
 
   isConnected(){
     return !!this.provider && !!this.ob
   }
 
-  async getSigner() {
+  getSigner() {
     return this.provider.getSigner()
   }
   
-  async getAddress() {
-    return await (await this.getSigner()).getAddress()
+  getAddress() {
+    return this.getSigner().getAddress()
+  }
+
+  toBigNumber (number: string) {
+    return ethers.utils.parseEther(number)
+  }
+
+  async contractInterface ({ contractAddress, contractABI }) {
+    return new Contract(
+        contractAddress,
+        contractABI,
+        this.getSigner()
+    )
+  }
+
+  async getTokenBalance ({ contract }) {
+    return contract.balanceOf(this.getAddress())
+  }
+
+  async checkAllowance ({ poolAddress, contract }) {
+      const allowance = await contract.allowance(this.getAddress(), poolAddress)
+      const decimals = await contract.decimals()
+    return { allowance, decimals }
   }
 }
 
