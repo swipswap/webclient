@@ -1,6 +1,8 @@
 import { erc20TokenABI, swipswapABI } from "../../scripts/ABIs"
 import { ethAPI } from "../../scripts/ethereum"
 import { PoolState } from '../typeDefinitions'
+import { ethers } from 'ethers'
+// import {swipswapABI} from '../../scripts/ABIs/abi'
 
 export const handleChange = (setState) => e => {
     const {name, value} = e.target
@@ -55,14 +57,82 @@ export const handleSubmitPool = (state: PoolState) => async e => {
     console.log(tx)
 }
 
-export const handleCommit = (state) => async e => {
-    console.log(state)
+export const handleCommit = (state, pool, setLockdetails) => async e=> {
+    const {address: tokenAddress} = state
+    const poolContract = new ethers.Contract("0x4b03Ac42133936ABf9c7C26c0aF3a08C27d56182", swipswapABI, await ethAPI.getSigner());
+    const poolAddress = Object.keys(pool)[0]
+    console.log({poolAddress})
+    const tokenDecimals = 100000000
+    await poolContract.newLock(tokenAddress, poolAddress, 1, state.amount*tokenDecimals)
+    const ethAddress = await ethAPI.getAddress()
+    const filter = poolContract.filters.NewLock(ethAddress, null, null, null)
+    poolContract.on(filter, async () => {
+        const newLock = await poolContract.queryFilter(filter)
+        const newLockDetails = await getLockDetails(newLock[newLock.length-1].args)
+        console.log({newLockDetails})
+        setLockdetails(newLockDetails)
+    })
 }
 
-export const handleFinalise = (state) => e => {
-    console.log(state)
+export const handleFinalise = (state, lock) => async e => {
+    const poolContract = new ethers.Contract("0x4b03Ac42133936ABf9c7C26c0aF3a08C27d56182", swipswapABI, await ethAPI.getSigner());
+    await poolContract.fulfillLock(ethers.utils.toUtf8Bytes(""),lock.pool,0,"0x0000000000000000000000000000000000000000", lock.index, Number(lock.index))
+    const filter = poolContract.filters.FulfillLock(lock.locker, lock.pool, null, null, null)
+    poolContract.on(filter, async () => {
+        const lockFulfilledEvent = await poolContract.queryFilter(filter)
+        const lockFulfilled = await getFulfilledLockDetails(lockFulfilledEvent[0].args)
+        console.log(lockFulfilled)
+    })
 }
 
 export const handleConnect = async () => {
     await ethAPI.connect()
 }
+
+export const loadPool = async (mainPoolAddress: string) => {
+    await ethAPI.connect()
+    if(!ethAPI.isConnected()) return
+    const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
+    const filter = poolContract.filters.PoolJoined(null, null)
+    const pools = await poolContract.queryFilter(filter)
+    console.log({pools})
+    const poolsDetails = {}
+    for(const pool of pools){
+        const details = await getPoolDetails(poolContract, pool.args[0])
+        poolsDetails[pool.args[0]] = details
+    }
+    return poolsDetails
+}
+
+export const getPoolDetails = async(mainPoolContract: ethers.Contract, poolAddress: string) => {
+    const poolDetailsList = await mainPoolContract.getPoolDetails(poolAddress)
+    return {
+        pubKey: poolDetailsList[0],
+        index: (poolDetailsList[1]).toString(),
+        initAmount: (poolDetailsList[2]).toString(),
+        unlockedAmount: (poolDetailsList[3]).toString(),
+        lockedAmount: (poolDetailsList[4]).toString(),
+        filledAmount: (poolDetailsList[5]).toString(),
+        isLocked: poolDetailsList[6],
+    }
+}
+export const getLockDetails = async(lock) => {
+    return {
+        locker: lock[0],
+        pool: lock[1],
+        index: (lock[2]).toString(),
+        amount: (lock[3]).toString(),
+    }
+}
+
+export const getFulfilledLockDetails = async(lock) => {
+    return {
+        locker: lock[0],
+        pool: lock[1],
+        index: (lock[2]).toString(),
+        amount: (lock[3]).toString(),
+        requertId: (lock[4]).toString()
+    }
+}
+
+export const asynEffect = ((callback: any) =>{callback()})

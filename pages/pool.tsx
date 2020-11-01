@@ -1,7 +1,8 @@
 import { useState } from "react"
-import {handleApprove, handleChange, handleConnect, handleSubmitPool} from "../components/handlers"
+import {handleApprove, handleChange, handleConnect, handleSubmitPool, loadPool} from "../components/handlers"
 import RenderFormFields from "../components/RenderFormFields"
 import { PoolState } from '../components/typeDefinitions'
+
 const formFields = (state, setState) => [
     {
         placeholder: "Currency",
@@ -51,6 +52,7 @@ const initialState: PoolState = {
 
 export default function Pool(){
     const [state, setState] = useState(initialState)
+    
 
     return <div className="w-64 border-2 border-black-500">
         <button onClick={handleConnect}>Connect Wallet</button>
