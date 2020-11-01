@@ -136,3 +136,8 @@ export const getFulfilledLockDetails = async(lock) => {
 }
 
 export const asynEffect = ((callback: any) =>{callback()})
+
+export const handleComponentSwitch = (value, setState, callbackFunc=(value)=>{}) => () => {
+    setState(value)
+    callbackFunc(value)
+}
