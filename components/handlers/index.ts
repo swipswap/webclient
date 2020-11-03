@@ -58,12 +58,14 @@ export const handleSubmitPool = (state: PoolState) => async e => {
 }
 
 export const handleCommit = (state, pool, setLockdetails) => async e=> {
-    const {address: tokenAddress} = state
-    const poolContract = new ethers.Contract("0x4b03Ac42133936ABf9c7C26c0aF3a08C27d56182", swipswapABI, await ethAPI.getSigner());
+    const {tokenAddress, mainPoolAddress, amount} = state
+    const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
     const poolAddress = Object.keys(pool)[0]
     console.log({poolAddress})
     const tokenDecimals = 100000000
-    await poolContract.newLock(tokenAddress, poolAddress, 1, state.amount*tokenDecimals)
+    console.log(tokenAddress, poolAddress, amount)
+    const index = pool.index === "1" ? 1 : 0
+    await poolContract.newLock(tokenAddress, poolAddress, index, amount*tokenDecimals)
     const ethAddress = await ethAPI.getAddress()
     const filter = poolContract.filters.NewLock(ethAddress, null, null, null)
     poolContract.on(filter, async () => {
@@ -75,7 +77,8 @@ export const handleCommit = (state, pool, setLockdetails) => async e=> {
 }
 
 export const handleFinalise = (state, lock) => async e => {
-    const poolContract = new ethers.Contract("0x4b03Ac42133936ABf9c7C26c0aF3a08C27d56182", swipswapABI, await ethAPI.getSigner());
+    const {mainPoolAddress} = state
+    const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
     await poolContract.fulfillLock(ethers.utils.toUtf8Bytes(""),lock.pool,0,"0x0000000000000000000000000000000000000000", lock.index, Number(lock.index))
     const filter = poolContract.filters.FulfillLock(lock.locker, lock.pool, null, null, null)
     poolContract.on(filter, async () => {
@@ -89,18 +92,21 @@ export const handleConnect = async () => {
     await ethAPI.connect()
 }
 
-export const loadPool = async (mainPoolAddress: string) => {
+export const handleFormConnect = (callback) => async () => {
     await ethAPI.connect()
-    if(!ethAPI.isConnected()) return
+    callback(await ethAPI.getAddress())
+}
+
+export const loadPool = async (mainPoolAddress: string) => {
     const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
     const filter = poolContract.filters.PoolJoined(null, null)
     const pools = await poolContract.queryFilter(filter)
-    console.log({pools})
     const poolsDetails = {}
     for(const pool of pools){
         const details = await getPoolDetails(poolContract, pool.args[0])
         poolsDetails[pool.args[0]] = details
     }
+    console.log({poolsDetails})
     return poolsDetails
 }
 
@@ -140,4 +146,19 @@ export const asynEffect = ((callback: any) =>{callback()})
 export const handleComponentSwitch = (value, setState, callbackFunc=(value)=>{}) => () => {
     setState(value)
     callbackFunc(value)
+}
+
+export const getMainPoolAddress = (pair: string) => {
+    return ({
+        'BTC / FUSD':"0x4b03Ac42133936ABf9c7C26c0aF3a08C27d56182",
+        'BTC / ETH':"0x0000000000000000000000000000000000000000" 
+    })[pair]
+}
+
+export const handleValueChange = (setState:any, ratio: number) => (e) => {
+    const {value, name} = e.target
+    const _value = Number(value)
+    const externalCoin = name === 'externalCoin' ? value :( _value / ratio).toFixed(5)
+    const onChainCoin = name === 'onChainCoin' ? value : (_value * ratio).toFixed(5)
+    setState({externalCoin, onChainCoin})
 }
