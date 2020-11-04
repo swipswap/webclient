@@ -55,6 +55,7 @@ export default class ETHAPI{
     return ethers.utils.parseEther(number)
   }
 
+  // Creates an interface to create an an instance of a contract (swipswap)
   async contractInterface ({ contractAddress, contractABI }) {
     return new Contract(
         contractAddress,
@@ -63,14 +64,16 @@ export default class ETHAPI{
     )
   }
 
-  async getTokenBalance ({ contract }) {
-    return contract.balanceOf(this.getAddress())
+  async getTokenBalance ({ tokenContract }) {
+    return tokenContract.balanceOf(this.getAddress())
   }
 
-  async checkAllowance ({ poolAddress, contract }) {
-      const allowance = await contract.allowance(this.getAddress(), poolAddress)
-      const decimals = await contract.decimals()
-    return { allowance, decimals }
+  // gets the spending allowance of a given tokenAddress (pool) by a swipswap contract
+  async checkAllowance ({ swipSwapAddress, tokenContract }) {
+      const allowance = await tokenContract.allowance(this.getAddress(), swipSwapAddress)
+      const decimals = await tokenContract.decimals()
+      const tokenSymbol = await tokenContract.symbol()
+      return { allowance, decimals, tokenSymbol }
   }
 }
 
