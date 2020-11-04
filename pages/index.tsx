@@ -15,7 +15,7 @@ export default function Home() {
           otherText="Pool"
           handleClick={()=>{}}
           MainComponent={<Swap address={address} getAddress={handleFormConnect(setAddress)}/>}
-          OtherComponent={<Pool/>}
+          OtherComponent={<Pool address={address} getAddress={handleFormConnect(setAddress)}/>}
         />
       </main>
     </Layout>
