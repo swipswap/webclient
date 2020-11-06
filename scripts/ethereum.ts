@@ -1,7 +1,6 @@
 import Onboard from 'bnc-onboard';
 import { ethers, Contract } from 'ethers'
 
-// import { LinkTokenABI, SwipSwapPoolABI } from './ABIs'
 
 const dappId = "f55de6cc-5d4a-4115-b773-f6dde3bbf817";
 const networkId = 5777;
@@ -70,7 +69,7 @@ export default class ETHAPI{
 
   // gets the spending allowance of a given tokenAddress (pool) by a swipswap contract
   async checkAllowance ({ swipSwapAddress, tokenContract }) {
-      const allowance = await tokenContract.allowance(this.getAddress(), swipSwapAddress)
+      const allowance = await tokenContract.allowance(await this.getAddress(), swipSwapAddress)
       const decimals = await tokenContract.decimals()
       const tokenSymbol = await tokenContract.symbol()
       return { allowance, decimals, tokenSymbol }

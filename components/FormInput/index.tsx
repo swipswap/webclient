@@ -1,10 +1,9 @@
-export default function FormInput({label, value, onChange, coin, name, balance="--.-------"}: {label: string; value: number | string; onChange: (e?: any )=>void; coin?: string; name: string; balance?: string; }){
-    const isPool = label === 'Amount'
+export default function FormInput({label, value, onChange, coin, name, balance="", balanceText="Balance"}: {label: string; value: number | string; onChange: (e?: any )=>void; coin?: string; name: string; balance?: string; balanceText?:string }){
     return (
         <div className="mt-8">
             <span className="inline-block w-full text-right text-xs px-2">
-            {name !== 'pubkey' && <>
-                <span className={`inline-block text-left w-${isPool ? 32 : 12}`}>{label === 'Amount' ? <>Current Allowance:</> : <>Balance:</>}</span>
+            {balance && <>
+                <span className={`inline-block text-left w-12`}>{balanceText}:</span>
                 <span className="inline-block text-left w-12 underline cursor-pointer hover:text-gray-700">{balance}</span>
             </>
             }

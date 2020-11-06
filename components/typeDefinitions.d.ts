@@ -1,4 +1,4 @@
-export interface PoolState {
+interface PoolState {
   amount: number;
   pubkey: string;
   tokenAddress: string;
