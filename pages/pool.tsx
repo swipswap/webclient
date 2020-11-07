@@ -1,67 +1,51 @@
-import { useState } from "react"
-import {handleApprove, handleChange, handleConnect, handleSubmitPool} from "../components/handlers"
-import RenderFormFields from "../components/RenderFormFields"
-import { PoolState } from '../components/typeDefinitions'
-const formFields = (state, setState) => [
-    {
-        placeholder: "Currency",
-        name: "address",
-        type: "select",
-        options: [
-            {text: "ETH", value: "0x0000000000000000000000000000000000000000"},
-            {text: "TUSD", value: "0x9E237f4a7AD90FfAFB0adEf703186F91428a6a38"}
-        ],
-        onChange: handleChange(setState),
-        value: state['address'],
-    },
-    {
-        placeholder: "Pubkey",
-        name: "pubkey",
-        type: "text",
-        onChange: handleChange(setState),
-        value: state['pubkey'],
-    },
-    {
-        placeholder: "Amount",
-        name: "amount",
-        type: "number",
-        onChange: handleChange(setState),
-        value: state['amount'],
-    },
-    // {
-    //     name: "approve",
-    //     value: "Approve",
-    //     type: "button",
-    //     onClick: handleApprove(state),
-    // },
-    // {
-    //     name: "join",
-    //     value: "Join",
-    //     type: "button",
-    //     onClick: handleSubmitPool(state),
-    // },
-]
+import { useState, useEffect } from "react"
+import Select from 'react-select'
+import { handleApprove, handleChange, handleSubmitPool, formatConnected, supportedPools, getAllowance, getMainPoolAddress, getAddressBalance } from "../components/handlers"
+import FormInput from '../components/FormInput'
 
 
-const initialState: PoolState = {
+const initialState = {
     amount: 0,
-    address: "0x9E237f4a7AD90FfAFB0adEf703186F91428a6a38",
-    pubkey: ""
+    tokenAddress: "0x9E237f4a7AD90FfAFB0adEf703186F91428a6a38",
+    pubkey: '',
+    swipSwapAddress: '0xa5E04f174c9ee02F8C79E4ead2bd6961EEC797fB',
+    pool: supportedPools[0]
 }
 
-export default function Pool(){
+export default function Pool({getAddress, address}){
     const [state, setState] = useState(initialState)
+    const [pool, setPool] = useState(supportedPools[0])
+    const {label, value, mainPoolAddress} = pool
+    const [currentAllowance, setAllowance] = useState(0)
+    const [addressBalance, setAddressBalance] = useState(0)
+    useEffect(() => {
+        if(!address)return
+        (async () => {
+            const allowance = await getAllowance(
+                value,
+                address,
+                mainPoolAddress
+            )
+            setAllowance(Number(allowance))
+            const bal = await getAddressBalance(value, address)
+            setAddressBalance(bal)
+        })()
+    }, [label, address])
 
-    return <div className="w-64 border-2 border-black-500">
-        <button onClick={handleConnect}>Connect Wallet</button>
-        <div>Pool</div>
+    const _state = {...state, tokenAddress: value, pool, swipSwapAddress: mainPoolAddress, address}
+
+    return <div className="w-full shadow p-4 rounded">
         <form onSubmit={(e) =>{e.preventDefault()}}>
-            {RenderFormFields(formFields, state, setState)}
-            <div>
-                <button onClick={handleApprove(state)} className="w-full">Approve</button>
-                <button onClick={handleSubmitPool(state)} className="w-full">Pool</button>
+            <div className="w-full flex justify-end mb-1 text-xs">
+                <button disabled={!!address} onClick={getAddress} className="p-1 flex justify-center items-center underline">{formatConnected(address)} <span className={`inline-block h-3 w-3 ml-2 rounded-full ${address?'bg-green-400':'bg-red-500'}`}></span></button>
             </div>
-            
+            <Select instanceId="select-select" defaultValue={state.pool} placeholder="Select Pool" options={supportedPools} name='pool' onChange={setPool} />
+            <FormInput label="Pubkey" value={state.pubkey} onChange={handleChange(setState)} name='pubkey' />
+            <FormInput label="Amount" value={state.amount} onChange={handleChange(setState)} name='amount' balance={String(addressBalance)} />
+            <div className="w-full flex py-4 pt-16 justify-between">
+                <button disabled={state.amount<currentAllowance} className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" onClick={handleApprove(_state, setAllowance)}>Approve</button>
+                <button disabled={(state.amount>currentAllowance || addressBalance < state.amount)} className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" onClick={handleSubmitPool(_state)}>Join Pool</button>
+            </div>          
         </form>
     </div>
 }

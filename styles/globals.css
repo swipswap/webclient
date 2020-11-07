@@ -15,6 +15,18 @@ a {
   text-decoration: none;
 }
 
+select, input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 * {
   box-sizing: border-box;
 }
