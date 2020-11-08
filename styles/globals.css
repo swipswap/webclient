@@ -31,6 +31,10 @@ input[type=number] {
   box-sizing: border-box;
 }
 
+.modal {
+  background-color: rgba(0, 0, 0, 0.699);
+}
+
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */
