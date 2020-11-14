@@ -54,7 +54,7 @@ export const bitcoin = (pubkey, index) => {
 };
 
 export const tbitcoin = (pubkey, previous) => {
-  if(!pubkey || !previous){return ""}
+  if(!pubkey){return ""}
   try {
     const now = previous;
     const tpubkey = b58.encode(

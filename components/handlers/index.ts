@@ -192,5 +192,5 @@ export const makeQrURI = (coin, address, amount) => {
         "BTC": "bitcoin",
         "ETH": "ethereum",
     }
-    return encodeURI(`${coins[coin]}:${address}?amount=${amount}&label=Swipswap Payment&message=Swipswap payment`)
+    return encodeURI(`${coins[coin]}:${address}?amount=${amount}&label=Swipswap_Payment&message=Swipswap_payment`)
 }
