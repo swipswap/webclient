@@ -54,6 +54,10 @@ export default class ETHAPI{
     return ethers.utils.parseEther(number)
   }
 
+  getAddressBalance() {
+    return this.provider.getBalance(this.getAddress())
+  }
+
   // Creates an interface to create an an instance of a contract (swipswap)
   async contractInterface ({ contractAddress, contractABI }) {
     return new Contract(
