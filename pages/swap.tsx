@@ -32,7 +32,7 @@ export default function Swap({getAddress, address}){
             console.log({mainPoolAddress})
             const _pools = await loadPool(mainPoolAddress)
             setPools(_pools)
-            const bal = await getAddressBalance(value, address)
+            const bal = await getAddressBalance(value, address, toast)
             setAddressBalance(bal)
         })()
     },[label, address])
