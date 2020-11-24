@@ -8,29 +8,31 @@ import Swap from './swap'
 
 export default function Home() {
   const [address, setAddress] = useState("")
+  const [lightTheme, setTheme] = useState(true)
   return (
-    <Layout>
+    <Layout lightTheme={lightTheme} setTheme={setTheme}>
       <main className="h-full w-full flex align-middle justify-center">
         <Switch
-          mainText="Swap"
-          otherText="Pool"
+          lightTheme={lightTheme}
+          mainText="SWAP"
+          otherText="POOL"
           handleClick={()=>{}}
           MainComponent={<Swap address={address} getAddress={handleFormConnect(setAddress)}/>}
           OtherComponent={<Pool address={address} getAddress={handleFormConnect(setAddress)}/>}
         />
       </main>
       <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={true}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                className="z-50"
-            />
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        className="z-50"
+      />
     </Layout>
   )
 }
