@@ -1,37 +1,31 @@
 import { useState } from 'react'
-import { updateStateItem } from './handlers'
-import { handleConnect } from '../handlers'
-
-// import { 
-//   connectMetamask, 
-//   getAddress, 
-// } from '../../scripts/ethereum'
+import Link from "next/link"
+// import { connectMetamask, getAddress, getNetwork } from '../../scripts/eth';
 import { toast } from 'react-toastify';
+import Logo from "../Logo"
+import Button, { ToggleMode, NavMenu } from '../Button';
 
 
-export default function Navbar() {
-  const [navbarProperties, setNavbarProperties] = useState({
-    expandedMenu: false, ethAddress: 'Connect', ethNetwork: ''
-  })
-
-	const handleConnection = async () => {
-    await handleConnect()
-		// const isConnected = await connectMetamask()
-		// if(isConnected){
-		// 	const address = await getAddress()
-		// 	setNavbarProperties(updateStateItem({ item: 'ethAddress', newValue: `${address.slice(0,6)}...${address.slice(38, 42)}`, prevState: navbarProperties }))
-    //   console.log('connected to metamask')
-		// }
-		// toast.error("Error connecting to your wallet")
-  }
-  
+export default function Navbar({ menuOpen, setMenuOpen, theme, setTheme }) {
+	const [ethAddress, setEthAddress] = useState("")
+  const [ethNetwork, setEthNetwork] = useState("")
 
 	return (
-    <div>
-      <button 
-      disabled={navbarProperties.ethAddress.indexOf('0x') !== -1}
-      className='text-xs text-center px-1 py-2 max-w-xs overflow-hidden lg:px-4 mr-6 lg:mr-0 leading-none border rounded text-white border-green-400 hover:border-transparent hover:bg-green-700 bg-green-500 md:text-lg'
-      onClick={handleConnection}>{navbarProperties.ethAddress}</button>
-    </div>
+		<header className='absolute lg:px-10 lg:w-full'>
+      <nav className='flex items-center justify-between pt-4'>
+        <Link href="/">
+          <a >
+            <Logo theme={theme} classname="h-6 md:h-10 md:mb-2"/>
+          </a>
+        </Link>
+        <div>
+          <span className='flex flex-wrap items-center'>
+            <Button theme={theme} text={'Connect Wallet'}/>
+            <ToggleMode theme={theme} setTheme={setTheme}/>
+            <NavMenu theme={theme} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+          </span>
+        </div>			
+      </nav>
+		</header>
 	);
 }
