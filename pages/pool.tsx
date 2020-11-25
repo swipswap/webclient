@@ -14,9 +14,9 @@ const initialState = {
     pool: supportedPools[0]
 }
 
-export default function Pool({getAddress, address}){
+export default function Pool({ getAddress, address, pool }){
     const [state, setState] = useState(initialState)
-    const [pool, setPool] = useState(supportedPools[0])
+    // const [pool, setPool] = useState(supportedPools[0])
     const {label, value, mainPoolAddress} = pool
     const [currentAllowance, setAllowance] = useState(0)
     const [addressBalance, setAddressBalance] = useState(0)
@@ -45,7 +45,6 @@ export default function Pool({getAddress, address}){
             <div className="w-full flex justify-end mb-1 text-xs">
                 <button disabled={!!address} onClick={getAddress} className="p-1 flex justify-center items-center underline">{formatConnected(address)} <span className={`inline-block h-3 w-3 ml-2 rounded-full ${address?'bg-green-400':'bg-red-500'}`}></span></button>
             </div>
-            <Select instanceId="select-select" defaultValue={state.pool} placeholder="Select Pool" options={supportedPools} name='pool' onChange={setPool} />
             <FormInput label="Pubkey" value={state.pubkey} onChange={handleChange(setState)} name='pubkey' />
             <FormInput label="Amount" value={state.amount} onChange={handleChange(setState)} name='amount' balance={String(addressBalance)} />
             <div className="w-full flex py-4 pt-16 justify-between">

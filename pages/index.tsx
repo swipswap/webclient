@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { handleFormConnect } from '../components/handlers'
+import { handleFormConnect, supportedPools } from '../components/handlers'
 import { ToastContainer } from 'react-toastify'
 import Layout from '../components/Layout'
 import Switch from '../components/Switch'
@@ -9,16 +9,21 @@ import Swap from './swap'
 export default function Home() {
   const [address, setAddress] = useState("")
   const [lightTheme, setTheme] = useState(true)
+  const [selectedPair, setSelectedPair] = useState(supportedPools[0])
+  const [pool, setPool] = useState(supportedPools[0])
   return (
     <Layout lightTheme={lightTheme} setTheme={setTheme}>
-      <main className="h-full w-full flex align-middle justify-center">
+      <main className="bg-white flex align-middle justify-center shadow-lg flex-col">
         <Switch
           lightTheme={lightTheme}
           mainText="SWAP"
           otherText="POOL"
           handleClick={()=>{}}
-          MainComponent={<Swap address={address} getAddress={handleFormConnect(setAddress)}/>}
-          OtherComponent={<Pool address={address} getAddress={handleFormConnect(setAddress)}/>}
+          MainComponent={<Swap selectedPair={selectedPair} address={address} getAddress={handleFormConnect(setAddress)}/>}
+          OtherComponent={<Pool pool={pool} address={address} getAddress={handleFormConnect(setAddress)}/>}
+          setSelectedPair={setSelectedPair}
+          options={supportedPools}
+          setPool={setPool}
         />
       </main>
       <ToastContainer

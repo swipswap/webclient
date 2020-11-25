@@ -5,6 +5,7 @@ import Select from 'react-select'
 import FormInput from '../components/FormInput'
 import PaymentModal from "../components/PaymentModal"
 import { tbitcoin } from "../scripts"
+import DropDown from "../components/DropDown"
 
 const initLockDetails = {
     amount: "",
@@ -13,10 +14,8 @@ const initLockDetails = {
     pool: "",
 }
 
-const options = supportedPools
-
-export default function Swap({getAddress, address}){
-    const [selectedPair, setSelectedPair] = useState(options[0])
+export default function Swap({ getAddress, address, selectedPair }){
+    
     const {label, value, mainPoolAddress} = selectedPair
     const [externalCoin, onChainCoin] = label.split(' / ')
     const [ratio, setRatio] = useState(1)
@@ -52,7 +51,6 @@ export default function Swap({getAddress, address}){
             <div className="w-full flex justify-end mb-1 text-xs">
                 <button disabled={!!address} onClick={getAddress} className="p-1 flex justify-center items-center underline">{formatConnected(address)} <span className={`inline-block h-3 w-3 ml-2 rounded-full ${address?'bg-green-400':'bg-red-500'}`}></span></button>
             </div>
-            <Select instanceId="select-select" defaultValue={options[0]} placeholder="Select pair" options={options} name="address" onChange={setSelectedPair} />
             <FormInput label="Send" value={coinsAmount.externalCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'externalCoin'} coin={externalCoin} balance="--.-------"/>
             <FormInput label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} balance={String(addressBalance)} />
             <div className="text-sm mt-3"><span>Rate:</span> <span>1 {externalCoin} = {ratio} {onChainCoin}</span> <span className="float-right">Fee: 0.0001 ETH</span></div>
