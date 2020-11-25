@@ -21,8 +21,6 @@ export default function Navbar({ menuOpen, toggleMenu, lightTheme, setTheme, set
         <div>
           <span className='flex flex-wrap items-center'>
             <Button lightTheme={lightTheme} setAddress={setAddress} address={address}/>
-            <ToggleMode lightTheme={lightTheme} setTheme={setTheme}/>
-            <NavMenu lightTheme={lightTheme} menuOpen={menuOpen} toggleMenu={toggleMenu}/>
           </span>
         </div>			
       </nav>

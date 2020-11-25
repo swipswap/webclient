@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 export default function SocialLinks({ lightTheme }) {
 
   return (
-    <div className='flex w-32 py-3 justify-between mx-auto'>
+    <div className='flex tablets:w-32 w-20  py-3 justify-between mx-auto'>
       { lightTheme ? ( 
         <>
           <span>
