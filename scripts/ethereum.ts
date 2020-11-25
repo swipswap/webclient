@@ -34,8 +34,10 @@ export default class ETHAPI{
   }
 
   async connect(){
-    await this.onboard().walletSelect()
-    this.connected = await this.onboard().walletCheck()
+    const result = await this.onboard().walletSelect()
+    if(result){
+      this.connected = await this.onboard().walletCheck()
+    }
   }
 
   isConnected(){
@@ -44,10 +46,13 @@ export default class ETHAPI{
 
   getSigner() {
     return this.provider.getSigner()
+
   }
   
   getAddress() {
-    return this.getSigner().getAddress()
+    if(this.connected){
+      return this.getSigner().getAddress()
+    }
   }
 
   toBigNumber (number: string) {
