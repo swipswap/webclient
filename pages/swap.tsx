@@ -6,6 +6,7 @@ import FormInput from '../components/FormInput'
 import PaymentModal from "../components/PaymentModal"
 import { tbitcoin } from "../scripts"
 import DropDown from "../components/DropDown"
+import { FormBtn } from "../components/Button"
 
 const initLockDetails = {
     amount: "",
@@ -14,8 +15,8 @@ const initLockDetails = {
     pool: "",
 }
 
-export default function Swap({ getAddress, address, selectedPair }){
-    
+export default function Swap({ lightTheme, address, selectedPair }){
+		
     const {label, value, mainPoolAddress} = selectedPair
     const [externalCoin, onChainCoin] = label.split(' / ')
     const [ratio, setRatio] = useState(1)
@@ -24,6 +25,8 @@ export default function Swap({ getAddress, address, selectedPair }){
     const [addressBalance, setAddressBalance] = useState(0)
     const [modalIsOpen, setModalIsOpen]= useState(false)
     const [coinsAmount, setCoinsAmount] = useState({externalCoin: 0, onChainCoin: 0})
+
+		const bgStyle = lightTheme ? 'bg-white' : 'bg-swip-deep'
 
     useEffect(() => {
         if(!address)return
@@ -45,19 +48,47 @@ export default function Swap({ getAddress, address, selectedPair }){
     const pubkey = firstPool ? pools[firstPool].pubKey : ''
 
     const isNotComitted = lockDetails.pool===""
-
-    return <div className="w-full shadow p-4 rounded">
+		const textStyle = lightTheme ? 'text-black': 'text-white'
+    return <div className="w-full shadow rounded">
         <form onSubmit={(e) =>{e.preventDefault()}}>
-            <div className="w-full flex justify-end mb-1 text-xs">
-                <button disabled={!!address} onClick={getAddress} className="p-1 flex justify-center items-center underline">{formatConnected(address)} <span className={`inline-block h-3 w-3 ml-2 rounded-full ${address?'bg-green-400':'bg-red-500'}`}></span></button>
-            </div>
-            <FormInput label="Send" value={coinsAmount.externalCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'externalCoin'} coin={externalCoin} balance="--.-------"/>
-            <FormInput label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} balance={String(addressBalance)} />
-            <div className="text-sm mt-3"><span>Rate:</span> <span>1 {externalCoin} = {ratio} {onChainCoin}</span> <span className="float-right">Fee: 0.0001 ETH</span></div>
-            <div className="w-full flex py-4 pt-8 justify-between">
-                <button className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" disabled={lockDetails.pool!==""} onClick={handleCommit({mainPoolAddress, tokenAddress: value, amount:Number(coinsAmount.externalCoin)}, pools, setLockdetails, toast)}>Commit</button>
-                <button className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" disabled={lockDetails.pool===""} onClick={toggleModalState(setModalIsOpen)}>Swap</button>
-            </div>
+        <div className={`h-52 ${lightTheme ? 'bg-swip-light-100': 'bg-swip-deep-300'}`}>
+					<div className='px-10 pb-1'>
+						<div className='flex tablets:pl-6 pl-4'>
+            	<FormInput classname={`w-3/5`} lightTheme={lightTheme} label="Send" value={coinsAmount.externalCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'externalCoin'} coin={externalCoin} />
+							<div className='pl-2 flex justify-right align-center flex-col mt-10 pt-1'>
+								<p className={textStyle}>Balance</p>
+								<p className={textStyle}>0.00</p>
+							</div>
+						</div>
+						<div className='flex tablets:pl-6 pl-4'>
+            	<FormInput classname={`w-3/5`} lightTheme={lightTheme} label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} />
+							<div className='pl-2 flex justify-center align-center flex-col mt-10 pt-1'>
+								<p className={textStyle}>Balance</p>
+								<p className={textStyle}>0.00</p>
+							</div>
+						</div>
+        		<div className={`text-xs mb-3 mt-1 mx-auto ${textStyle} tablets:px-6 flex justify-between`}>
+							<span>Rate: 1 {externalCoin} = {ratio} {onChainCoin}</span>
+							<span>Fee: 0.0001 ETH</span>
+						</div>
+					</div>
+					<div className={`${bgStyle} px-10`}>
+						<div className={`w-full flex py-8 justify-between`}>
+							<FormBtn 
+								disabledStatus={lockDetails.pool!==""} 
+								classname={`w-2/5 h-10 tablets:ml-6 font-semibold ${lightTheme ? 'text-black hover:text-yellow-200 hover:bg-swip-deep' : 'text-yellow-200 hover:text-black hover:bg-swip-light-300'} bg-transparent-0 border-2 border-swip-light-300 rounded shadow`}
+								clickHandler={handleCommit({mainPoolAddress, tokenAddress: value, amount:Number(coinsAmount.externalCoin)}, pools, setLockdetails, toast)}
+								text='Commit'
+							/>
+							<FormBtn 
+								disabledStatus={lockDetails.pool===""} 
+								classname={`w-2/5 h-10 tablets:mr-6 font-semibold ${lightTheme ? 'text-black hover:text-yellow-200 hover:bg-swip-deep' : 'text-yellow-200 hover:text-black hover:bg-swip-light-300'} bg-transparent-0 border-2 border-swip-light-300 rounded shadow`}
+								clickHandler={toggleModalState(setModalIsOpen)}
+								text='Swap'
+							/>
+						</div>
+					</div>
+				</div>
             
         </form>
         <PaymentModal
@@ -70,9 +101,4 @@ export default function Swap({ getAddress, address, selectedPair }){
             callbackFunc={handleFinalise({mainPoolAddress, tokenAddress: value, amount:Number(coinsAmount.externalCoin)}, lockDetails)}
         />
     </div>
-}
-
-const formatConnected = (address: string) => {
-    const formated = address ? `${address.slice(0,5)}...${address.slice(address.length-5)}` : 'Connect Wallet'
-    return formated
 }
