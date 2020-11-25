@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react"
 import { toast } from 'react-toastify'
-import {handleCommit, handleFinalise, loadPool, handleValueChange, supportedPools, getAddressBalance, toggleModalState} from "../components/handlers"
-import Select from 'react-select'
-import FormInput from '../components/FormInput'
-import PaymentModal from "../components/PaymentModal"
-import { tbitcoin } from "../scripts"
-import DropDown from "../components/DropDown"
-import { FormBtn } from "../components/Button"
+import {handleCommit, handleFinalise, loadPool, handleValueChange, supportedPools, getAddressBalance, toggleModalState} from "../handlers"
+import FormInput from '../FormInput'
+import PaymentModal from "../PaymentModal"
+import { tbitcoin } from "../../scripts"
+import { FormBtn } from "../Button"
 
 const initLockDetails = {
     amount: "",

@@ -3,8 +3,8 @@ import { handleFormConnect, supportedPools } from '../components/handlers'
 import { ToastContainer } from 'react-toastify'
 import Layout from '../components/Layout'
 import Switch from '../components/Switch'
-import Pool from './pool'
-import Swap from './swap'
+import Pool from '../components/Pool'
+import Swap from '../components/Swap'
 
 export default function Home() {
   const [address, setAddress] = useState("")

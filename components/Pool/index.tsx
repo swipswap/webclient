@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react"
 import { toast } from 'react-toastify'
-import Select from 'react-select'
-import { handleApprove, handleChange, handleSubmitPool, formatConnected, supportedPools, getAllowance, getMainPoolAddress, getAddressBalance } from "../components/handlers"
-import FormInput from '../components/FormInput'
-import { stat } from "fs/promises"
-import { FormBtn } from "../components/Button"
+import { handleApprove, handleChange, handleSubmitPool, formatConnected, supportedPools, getAllowance, getMainPoolAddress, getAddressBalance } from "../handlers"
+import FormInput from '../FormInput'
+import { FormBtn } from "../Button"
 
 
 const initialState = {
