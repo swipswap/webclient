@@ -54,14 +54,14 @@ export default function Swap({ lightTheme, address, selectedPair }){
         <div className={`h-52 ${lightTheme ? 'bg-swip-light-100': 'bg-swip-deep-300'}`}>
 					<div className='px-10 pb-1'>
 						<div className='flex tablets:pl-6 pl-4'>
-            	<FormInput classname={`w-3/5`} lightTheme={lightTheme} label="Send" value={coinsAmount.externalCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'externalCoin'} coin={externalCoin} />
+            	<FormInput classname='' inputStyle={'w-3/5 text-right'} lightTheme={lightTheme} label="Send" value={coinsAmount.externalCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'externalCoin'} coin={externalCoin} />
 							<div className='pl-2 flex justify-right align-center flex-col mt-10 pt-1'>
 								<p className={textStyle}>Balance</p>
 								<p className={textStyle}>0.00</p>
 							</div>
 						</div>
 						<div className='flex tablets:pl-6 pl-4'>
-            	<FormInput classname={`w-3/5`} lightTheme={lightTheme} label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} />
+            	<FormInput classname='' inputStyle={'w-3/5 text-right'} lightTheme={lightTheme} label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} />
 							<div className='pl-2 flex justify-center align-center flex-col mt-10 pt-1'>
 								<p className={textStyle}>Balance</p>
 								<p className={textStyle}>0.00</p>
