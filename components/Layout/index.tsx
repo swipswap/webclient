@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { CloseDropDown } from '../Button'
 import Footer from '../Footer'
 import Hero from '../Hero'
-import Navbar from '../Navbar'
+import Navbar, { NavbarDropDown } from '../Navbar'
 import { supportedPools } from '../handlers'
 
 const Question = () => {
@@ -31,35 +31,27 @@ const searchName=(value, setPools)=>{
   }
 }
 
-const Layout = ({ children, lightTheme, setTheme }) => {
+const Layout = ({ children, lightTheme, setTheme, setAddress, address }) => {
   
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, toggleMenu] = useState(false)
   const [pools, setPools] = useState(supportedPools)
+  
 
   return (
-    <div className="h-screen w-full">
-      <div className='bg-transparent-0'>
-        <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} theme={lightTheme} setTheme={setTheme}/>
+    <>
+      <div>
+        <Navbar menuOpen={menuOpen} toggleMenu={toggleMenu} lightTheme={lightTheme} setTheme={setTheme} setAddress={setAddress} address={address}/>
         {
-          menuOpen && <div className='absolute group mt-20 right-0 mr-8 lg:mr-12 tablet:p-4 w-3/4 lg:w-1/3 rounded-2xl py-5 px-5 bg-white z-20'>
-            <span className='pt-5'> <CloseDropDown menuOpen={menuOpen} setMenuOpen={setMenuOpen} /></span>
-            <p className='font-semibold py-3'>Select Exchange <span><Question /></span></p>
-            <p>
-             <input type='text' placeholder='Search name' onChange={({target})=>searchName(target.value, setPools)} className='bg-swip-input w-full rounded-3xl px-4 py-2 focus:outline-none focus:ring focus:swip-primary'/>
-            </p>
-            <p className='font-semibold mt-3 pb-10'>Exchange Type <span><ArrowDown /></span></p>
-            <span className='border-b-2'></span>
-            <ul className='pb-5'>
-              {
-                pools.length > 0 && pools.map(p => <ol key={p.value}>{p.label}</ol>)
-              } 
-            </ul>
-          </div>
+          menuOpen && <NavbarDropDown />
         }
       </div>
-      <Hero theme={lightTheme}>{children}</Hero>
-      <Footer theme={lightTheme}/>
-    </div> 
+      <Hero lightTheme={lightTheme}>
+        <div className='pt-6 tablets:p-8 font-sans tablets:w-hero-big tablets:px-20 md:w-3/6 mx-auto mb-4'>
+          {children}
+          </div>
+        </Hero>
+      <Footer lightTheme={lightTheme}/>
+    </> 
   )
 }
 export default Layout
