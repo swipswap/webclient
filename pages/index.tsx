@@ -12,7 +12,7 @@ export default function Home() {
   const [selectedPair, setSelectedPair] = useState(supportedPools[0])
   const [pool, setPool] = useState(supportedPools[0])
   return (
-    <Layout lightTheme={lightTheme} setTheme={setTheme}>
+    <Layout lightTheme={lightTheme} setTheme={setTheme} setAddress={setAddress} address={address}>
       <main className="bg-white flex align-middle justify-center shadow-lg flex-col">
         <Switch
           lightTheme={lightTheme}
