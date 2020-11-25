@@ -8,13 +8,17 @@ module.exports = {
       colors: {
         'accent-1': '#333',
         'swip-light': '#EACEF6',
+        'swip-light-100': '#F9F0FC' ,
+        'swip-light-300':'#A67AB9',
         'swip-deep': '#37283E',
+        'swip-deep-300': '#4C3552',
         'swip-deep-500': '#56246B',
         'swip-primary': '#63277D',
         'swip-secondary1': '#CEA5E0',
         'swip-secondary': '#4C3552',
         'swip-drop-down': '#FFF',
         'swip-input': '#F9F0FC',
+        'swip-form-text': '#AAA9A9',
         "sessn-id": "#8e8484",
         "send-test": "#737373",
         "qr-border": "77C2D4"

@@ -13,14 +13,14 @@ export default function Home() {
   const [pool, setPool] = useState(supportedPools[0])
   return (
     <Layout lightTheme={lightTheme} setTheme={setTheme} setAddress={setAddress} address={address}>
-      <main className="bg-white flex align-middle justify-center shadow-lg flex-col">
+      <main className={`bg-white flex align-middle justify-center shadow-2xl flex-col ${lightTheme ? 'ring-swip-light' : 'ring-swip-secondary'} rounded-lg ring-2`}>
         <Switch
           lightTheme={lightTheme}
           mainText="SWAP"
           otherText="POOL"
           handleClick={()=>{}}
-          MainComponent={<Swap selectedPair={selectedPair} address={address} getAddress={handleFormConnect(setAddress)}/>}
-          OtherComponent={<Pool pool={pool} address={address} getAddress={handleFormConnect(setAddress)}/>}
+          MainComponent={<Swap selectedPair={selectedPair} address={address} lightTheme={lightTheme}/>}
+          OtherComponent={<Pool pool={pool} address={address} lightTheme={lightTheme}/>}
           setSelectedPair={setSelectedPair}
           options={supportedPools}
           setPool={setPool}

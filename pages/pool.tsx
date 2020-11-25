@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { handleApprove, handleChange, handleSubmitPool, formatConnected, supportedPools, getAllowance, getMainPoolAddress, getAddressBalance } from "../components/handlers"
 import FormInput from '../components/FormInput'
 import { stat } from "fs/promises"
+import { FormBtn } from "../components/Button"
 
 
 const initialState = {
@@ -14,12 +15,15 @@ const initialState = {
     pool: supportedPools[0]
 }
 
-export default function Pool({ getAddress, address, pool }){
+export default function Pool({ lightTheme, address, pool }){
     const [state, setState] = useState(initialState)
     // const [pool, setPool] = useState(supportedPools[0])
     const {label, value, mainPoolAddress} = pool
     const [currentAllowance, setAllowance] = useState(0)
-    const [addressBalance, setAddressBalance] = useState(0)
+		const [addressBalance, setAddressBalance] = useState(0)
+		
+		const bgStyle = lightTheme ? 'bg-white' : 'bg-swip-deep'
+		const textStyle = lightTheme ? 'text-black': 'text-white'
     useEffect(() => {
         if(!address)return
         (async () => {
@@ -40,17 +44,65 @@ export default function Pool({ getAddress, address, pool }){
     
     const isLTApproved = !state.amount || state.amount === 0 || (!isEth && state.amount < currentAllowance) || !state.pubkey
     const isZeroOrGTApproved = (!state.amount || state.amount === 0 || (state.amount > currentAllowance && !isEth) || addressBalance < state.amount)
-    return <div className="w-full shadow p-4 rounded">
+    return <div className="w-full shadow rounded">
         <form onSubmit={(e) =>{e.preventDefault()}}>
-            <div className="w-full flex justify-end mb-1 text-xs">
-                <button disabled={!!address} onClick={getAddress} className="p-1 flex justify-center items-center underline">{formatConnected(address)} <span className={`inline-block h-3 w-3 ml-2 rounded-full ${address?'bg-green-400':'bg-red-500'}`}></span></button>
+            <div className={`h-52 ${lightTheme ? 'bg-swip-light-100': 'bg-swip-deep-300'}`}>
+							<div className='px-10 pb-1'>
+								<div className='flex tablets:pl-6 pl-4'>
+									<FormInput
+										classname='mt-3'
+										inputStyle={`w-full`}
+										lightTheme={lightTheme}
+										label="Pubkey"
+										value={state.pubkey} 
+										onChange={handleChange(setState)}
+										name='pubkey'
+									/>
+								</div>
+								<div className='flex tablets:pl-6 pl-4 mb-2 mt-8'>
+									<FormInput
+										classname=''
+										inputStyle={'w-3/5 text-right'}
+										lightTheme={lightTheme}
+										label="Amount"
+										value={state.amount} 
+										onChange={handleChange(setState)}
+										name='amount' 
+									/>
+									<div className='pl-2 flex justify-center align-center flex-col mt-4 pt-1 pb-4 mb-3'>
+										<p className={textStyle}>Balance</p>
+										<p className={textStyle}>{addressBalance > 0 ? String(addressBalance) : '0.00'}</p>
+									</div>
+								</div>
+							</div>
+							
+							<div className={`${bgStyle} px-10`}>
+						<div className={`w-full flex py-8 justify-between`}>
+							<FormBtn
+								disabledStatus={isLTApproved} 
+								classname={`w-2/5 h-10 tablets:ml-6 font-semibold ${lightTheme ? 'text-black hover:text-yellow-200 hover:bg-swip-deep' : 'text-yellow-200 hover:text-black hover:bg-swip-light-300'} bg-transparent-0 border-2 border-swip-light-300 rounded shadow`}
+								clickHandler={handleApprove(_state, setAllowance, toast)}
+								text='Approve'
+							/>
+							<FormBtn 
+								disabledStatus={isZeroOrGTApproved} 
+								classname={`w-2/5 h-10 tablets:mr-6 font-semibold ${lightTheme ? 'text-black hover:text-yellow-200 hover:bg-swip-deep' : 'text-yellow-200 hover:text-black hover:bg-swip-light-300'} bg-transparent-0 border-2 border-swip-light-300 rounded shadow`}
+								clickHandler={handleSubmitPool(_state, toast)}
+								text='Join Pool'
+							/>
+						</div>
+					</div>
+
+
+
+
+
             </div>
-            <FormInput label="Pubkey" value={state.pubkey} onChange={handleChange(setState)} name='pubkey' />
-            <FormInput label="Amount" value={state.amount} onChange={handleChange(setState)} name='amount' balance={String(addressBalance)} />
-            <div className="w-full flex py-4 pt-16 justify-between">
-                <button disabled={isLTApproved} className={isLTApproved ? 'bg-orange-400 w-2/5 h-10 rounded cursor-not-allowed' : 'w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow'} onClick={handleApprove(_state, setAllowance, toast)}>Approve</button>
-                <button disabled={isZeroOrGTApproved} className={isZeroOrGTApproved ? 'bg-orange-400 w-2/5 h-10 rounded cursor-not-allowed' : 'w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow'} onClick={handleSubmitPool(_state, toast)}>Join Pool</button>
-            </div>          
+            {/* <div className="w-full flex py-4 pt-16 justify-between">
+                <button disabled={isLTApproved} className={isLTApproved ? 'bg-orange-400 w-2/5 h-10 rounded cursor-not-allowed' : 'w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow'} onClick={}>Approve</button>
+                <button disabled={isZeroOrGTApproved} className={isZeroOrGTApproved ? 'bg-orange-400 w-2/5 h-10 rounded cursor-not-allowed' : 'w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow'} onClick={}>Join Pool</button>
+            </div>           */}
         </form>
     </div>
 }
+

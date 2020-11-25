@@ -54,15 +54,33 @@ export default function Swap({ lightTheme, address, selectedPair }){
         <div className={`h-52 ${lightTheme ? 'bg-swip-light-100': 'bg-swip-deep-300'}`}>
 					<div className='px-10 pb-1'>
 						<div className='flex tablets:pl-6 pl-4'>
-            	<FormInput classname='' inputStyle={'w-3/5 text-right'} lightTheme={lightTheme} label="Send" value={coinsAmount.externalCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'externalCoin'} coin={externalCoin} />
-							<div className='pl-2 flex justify-right align-center flex-col mt-10 pt-1'>
+            	<FormInput
+								classname='mt-3'
+								inputStyle={'w-3/5 text-right'}
+								lightTheme={lightTheme}
+								label="Send" value={coinsAmount.externalCoin}
+								onChange={handleValueChange(setCoinsAmount, ratio)}
+								name={'externalCoin'}
+								coin={externalCoin}
+							/>
+							<div className='pl-2 flex justify-right align-center flex-col mt-8'>
 								<p className={textStyle}>Balance</p>
 								<p className={textStyle}>0.00</p>
 							</div>
 						</div>
+						<div className='w-4/5 pl-4 mt-4'>
+							{
+								lightTheme ? <svg className={`${textStyle} mx-auto`} width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M12.3909 5.92105L11.1009 4.79236L7.18465 8.21912V0.567383H5.36015V8.21912L1.44385 4.79236L0.153931 5.92105L6.2724 11.2747L12.3909 5.92105Z" fill="#555353"/>
+								</svg> :
+								<svg className={`${textStyle} mx-auto`} width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M12.3909 5.92105L11.1009 4.79236L7.18465 8.21912V0.567383H5.36015V8.21912L1.44385 4.79236L0.153931 5.92105L6.2724 11.2747L12.3909 5.92105Z" fill="#A67AB9"/>
+								</svg>
+							}
+						</div>
 						<div className='flex tablets:pl-6 pl-4'>
             	<FormInput classname='' inputStyle={'w-3/5 text-right'} lightTheme={lightTheme} label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} />
-							<div className='pl-2 flex justify-center align-center flex-col mt-10 pt-1'>
+							<div className='pl-2 flex justify-center align-center flex-col mt-4 pt-1'>
 								<p className={textStyle}>Balance</p>
 								<p className={textStyle}>0.00</p>
 							</div>
