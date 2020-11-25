@@ -1,5 +1,5 @@
-export default function SwipSwapLogo({ classname, theme }) {
-  return theme ? (
+export default function SwipSwapLogo({ classname, lightTheme }) {
+  return lightTheme ? (
     <svg className={classname} width="182" height="38" viewBox="0 0 182 38" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
       <rect width="182" height="38" fill="url(#pattern0)"/>
       <defs>
