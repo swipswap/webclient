@@ -65,7 +65,7 @@ export default function Swap({getAddress, address}){
         <PaymentModal
             isOpen={modalIsOpen}
             toggleOpen={toggleModalState(setModalIsOpen)}
-            coin="BTC"
+            coin={externalCoin}
             address={tbitcoin(pubkey,Number(lockDetails.index))}
             amount={coinsAmount.externalCoin}
             disabled={lockDetails.pool===""}
