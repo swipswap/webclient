@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { toast } from 'react-toastify'
 import {handleCommit, handleFinalise, loadPool, handleValueChange, supportedPools, getAddressBalance, toggleModalState} from "../components/handlers"
 import Select from 'react-select'
 import FormInput from '../components/FormInput'
@@ -31,7 +32,7 @@ export default function Swap({getAddress, address}){
             console.log({mainPoolAddress})
             const _pools = await loadPool(mainPoolAddress)
             setPools(_pools)
-            const bal = await getAddressBalance(value, address)
+            const bal = await getAddressBalance(value, address, toast)
             setAddressBalance(bal)
         })()
     },[label, address])
@@ -44,6 +45,8 @@ export default function Swap({getAddress, address}){
     const firstPool = Object.keys(pools)[0]
     const pubkey = firstPool ? pools[firstPool].pubKey : ''
 
+    const isNotComitted = lockDetails.pool===""
+
     return <div className="w-full shadow p-4 rounded">
         <form onSubmit={(e) =>{e.preventDefault()}}>
             <div className="w-full flex justify-end mb-1 text-xs">
@@ -54,7 +57,7 @@ export default function Swap({getAddress, address}){
             <FormInput label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} balance={String(addressBalance)} />
             <div className="text-sm mt-3"><span>Rate:</span> <span>1 {externalCoin} = {ratio} {onChainCoin}</span> <span className="float-right">Fee: 0.0001 ETH</span></div>
             <div className="w-full flex py-4 pt-8 justify-between">
-                <button className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" disabled={lockDetails.pool!==""} onClick={handleCommit({mainPoolAddress, tokenAddress: value, amount:Number(coinsAmount.externalCoin)}, pools, setLockdetails)}>Commit</button>
+                <button className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" disabled={lockDetails.pool!==""} onClick={handleCommit({mainPoolAddress, tokenAddress: value, amount:Number(coinsAmount.externalCoin)}, pools, setLockdetails, toast)}>Commit</button>
                 <button className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" disabled={lockDetails.pool===""} onClick={toggleModalState(setModalIsOpen)}>Swap</button>
             </div>
             

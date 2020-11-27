@@ -1,6 +1,7 @@
 import { swipswapABI, swipTokenABI } from "../../scripts/ABIs"
 import { ethAPI } from "../../scripts/ethereum"
 import { ethers } from 'ethers'
+import { toast } from "react-toastify"
 
 export const handleChange = (setState) => e => {
     const { name, value } = e.target
@@ -9,6 +10,17 @@ export const handleChange = (setState) => e => {
 
 export const setTxHash = ({ hash, setHash }) => {
     setHash(hash)
+}
+
+const handleError = (e, toast) => {
+    if (e.code === 4001){
+        toast(e.message.slice(e.message.lastIndexOf(':')+1, e.message.length))
+        return null
+    }
+    if(e.code === -32603){
+        toast(e.data.message.slice(e.data.message.lastIndexOf(':')+1, e.data.message.length))
+        return null
+    }
 }
 
 export const getAllowance = async (tokenAddress: string, address: string, swipSwapAddress)=> {
@@ -23,60 +35,80 @@ export const getAllowance = async (tokenAddress: string, address: string, swipSw
     
 }
 
-export const handleApprove = (state: any, setAllowance) => async e => {
+export const handleApprove = (state: any, setAllowance, toast) => async e => {
     console.log("clicked")
     const { amount, pool, tokenAddress } = state
+    if (!amount) {
+        toast('You must specify an amount greater than 0')
+        return null
+    }
+    try {
     const tokenContract = await ethAPI.contractInterface({ contractAddress: tokenAddress, contractABI: swipTokenABI })
     const decimals = await tokenContract.decimals()
     const value = amount * (10 ** decimals)
     console.log(Number(value))
-    try {
         const tx = await tokenContract.approve(pool.mainPoolAddress, value)
         await tx.wait()
-        console.log(tx.transactionHash)
+        // console.log(tx.transactionHash)
         setAllowance(value)
-    }catch(err){
-        console.log(err)
+        console.log(tx)
+        toast('success!')
+    }catch(e){
+        handleError(e, toast)
     }
 }
 
-export const handleSubmitPool = (state: any) => async e => {
+export const handleSubmitPool = (state: any, toast) => async e => {
     const { amount, pool, pubkey, tokenAddress } = state
+    if(!pubkey) {
+        toast('You need to provide a valid xpub key')
+        return null
+    }
+    try {
     const tokenContract = await ethAPI.contractInterface({ contractAddress: tokenAddress, contractABI: swipTokenABI })
     const decimals = await tokenContract.decimals()
+    console.log(decimals)
     const value = amount * (10 ** decimals)
     const poolContract = await ethAPI.contractInterface({ contractAddress: pool.mainPoolAddress, contractABI: swipswapABI })
-    try {
         const tx = await poolContract.joinPool(value, pubkey, pool.value)
         await tx.wait()
-        console.log({tx})
-    } catch(err) {
-        console.log(err)
+        toast('success!')
+    } catch(e) {
+        handleError(e, toast)
     }
 }
 
-export const handleCommit = (state, pool, setLockdetails) => async e=> {
+export const handleCommit = (state, pool, setLockdetails, toast) => async e=> {
     const {tokenAddress, mainPoolAddress, amount} = state
-    const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
-    const poolAddress = Object.keys(pool)[0]
-    const tokenDecimals = 100000000
-    console.log(tokenAddress, poolAddress, amount)
-    const index = pool[poolAddress].index === "1" ? 1 : 0
-    await poolContract.newLock(tokenAddress, poolAddress, index, amount*tokenDecimals)
-    const ethAddress = await ethAPI.getAddress()
-    const filter = poolContract.filters.NewLock(ethAddress, null, null, null)
-    poolContract.on(filter, async () => {
-        const newLock = await poolContract.queryFilter(filter)
-        const newLockDetails = await getLockDetails(newLock[newLock.length-1].args)
-        console.log({newLockDetails})
-        setLockdetails(newLockDetails)
-    })
+    if(!amount) {
+        toast('Send field is empty')
+        return null
+    }
+    try {
+        const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, ethAPI.getSigner());
+        const poolAddress = Object.keys(pool)[0]
+        const tokenDecimals = 100000000
+        console.log(tokenAddress, poolAddress, amount)
+        const index = pool[poolAddress].index === "1" ? 1 : 0
+        await poolContract.newLock(tokenAddress, poolAddress, index, amount*tokenDecimals)
+        const ethAddress = await ethAPI.getAddress()
+        const filter = poolContract.filters.NewLock(ethAddress, null, null, null)
+        poolContract.on(filter, async () => {
+            const newLock = await poolContract.queryFilter(filter)
+            const newLockDetails = await getLockDetails(newLock[newLock.length-1].args)
+            console.log({newLockDetails})
+            setLockdetails(newLockDetails)
+        })
+        toast('success!')
+    } catch(e) {
+        handleError(e, toast)
+    }
 }
 
 export const handleFinalise = (state, lock) => async e => {
     console.log("clicked...")
     const {mainPoolAddress} = state
-    const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
+    const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, ethAPI.getSigner());
     await poolContract.fulfillLock(ethers.utils.toUtf8Bytes(""),lock.pool,0,"0x0000000000000000000000000000000000000000", lock.index, Number(lock.index))
     const filter = poolContract.filters.FulfillLock(lock.locker, lock.pool, null, null, null)
     poolContract.on(filter, async () => {
@@ -86,15 +118,33 @@ export const handleFinalise = (state, lock) => async e => {
     })
 }
 
-export const getAddressBalance = async (tokenAddress: string, address: string) => {
-    const tokenContract = await ethAPI.contractInterface({ contractAddress: tokenAddress, contractABI: swipTokenABI })
-    const decimals = await tokenContract.decimals()
-    const bal = await tokenContract.balanceOf(address)
-    return bal/10**decimals
+export const getAddressBalance = async (tokenAddress: string, address: string, toast) => {
+    let bal: any
+    if (tokenAddress === '0x0000000000000000000000000000000000000000') {
+        try {
+            bal = await ethAPI.getAddressBalance();
+            return bal/10**18
+
+        } catch(e){
+            handleError(e, toast)
+        }
+    }
+    try {
+        const tokenContract = await ethAPI.contractInterface({ contractAddress: tokenAddress, contractABI: swipTokenABI })
+        const decimals = await tokenContract.decimals()
+        bal = await tokenContract.balanceOf(address)
+        return bal/10**decimals
+    } catch(e) {
+        handleError(e, toast)
+    }
 }
 
 export const handleConnect = async () => {
-    await ethAPI.connect()
+    try {
+        await ethAPI.connect()
+    } catch(e) {
+        console.log(e)
+    }
 }
 
 export const handleFormConnect = (callback) => async () => {
@@ -103,10 +153,11 @@ export const handleFormConnect = (callback) => async () => {
 }
 
 export const loadPool = async (mainPoolAddress: string) => {
-    const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
+    const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, ethAPI.getSigner());
     const filter = poolContract.filters.PoolJoined(null, null)
     const pools = await poolContract.queryFilter(filter)
     const poolsDetails = {}
+    
     for(const pool of pools){
         const details = await getPoolDetails(poolContract, pool.args[0])
         poolsDetails[pool.args[0]] = details

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { handleFormConnect } from '../components/handlers'
+import { ToastContainer } from 'react-toastify'
 import Layout from '../components/Layout'
 import Switch from '../components/Switch'
 import Pool from './pool'
@@ -18,6 +19,18 @@ export default function Home() {
           OtherComponent={<Pool address={address} getAddress={handleFormConnect(setAddress)}/>}
         />
       </main>
+      <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                className="z-50"
+            />
     </Layout>
   )
 }
