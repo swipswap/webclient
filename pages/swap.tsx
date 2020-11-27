@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react"
-import {handleCommit, handleFinalise, loadPool, handleValueChange, supportedPools, getAddressBalance} from "../components/handlers"
+import {handleCommit, handleFinalise, loadPool, handleValueChange, supportedPools, getAddressBalance, toggleModalState} from "../components/handlers"
 import Select from 'react-select'
 import FormInput from '../components/FormInput'
+import PaymentModal from "../components/PaymentModal"
+import { tbitcoin } from "../scripts"
 
 const initLockDetails = {
     amount: "",
@@ -20,7 +22,7 @@ export default function Swap({getAddress, address}){
     const [pools, setPools] = useState({})
     const [lockDetails, setLockdetails] = useState(initLockDetails)
     const [addressBalance, setAddressBalance] = useState(0)
-
+    const [modalIsOpen, setModalIsOpen]= useState(false)
     const [coinsAmount, setCoinsAmount] = useState({externalCoin: 0, onChainCoin: 0})
 
     useEffect(() => {
@@ -39,7 +41,9 @@ export default function Swap({getAddress, address}){
         setRatio({'BTC / FUSD': 13_000, 'BTC / ETH': 35.85}[label])
     }, [label])
 
-    
+    const firstPool = Object.keys(pools)[0]
+    const pubkey = firstPool ? pools[firstPool].pubKey : ''
+
     return <div className="w-full shadow p-4 rounded">
         <form onSubmit={(e) =>{e.preventDefault()}}>
             <div className="w-full flex justify-end mb-1 text-xs">
@@ -51,10 +55,19 @@ export default function Swap({getAddress, address}){
             <div className="text-sm mt-3"><span>Rate:</span> <span>1 {externalCoin} = {ratio} {onChainCoin}</span> <span className="float-right">Fee: 0.0001 ETH</span></div>
             <div className="w-full flex py-4 pt-8 justify-between">
                 <button className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" disabled={lockDetails.pool!==""} onClick={handleCommit({mainPoolAddress, tokenAddress: value, amount:Number(coinsAmount.externalCoin)}, pools, setLockdetails)}>Commit</button>
-                <button className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" disabled={lockDetails.pool===""} onClick={handleFinalise({mainPoolAddress, tokenAddress: value, amount:Number(coinsAmount.externalCoin)}, lockDetails)}>Swap</button>
+                <button className="w-2/5 h-10 text-yellow-200 bg-blue-500 hover:bg-blue-600 rounded shadow" disabled={lockDetails.pool===""} onClick={toggleModalState(setModalIsOpen)}>Swap</button>
             </div>
             
         </form>
+        <PaymentModal
+            isOpen={modalIsOpen}
+            toggleOpen={toggleModalState(setModalIsOpen)}
+            coin={externalCoin}
+            address={tbitcoin(pubkey,Number(lockDetails.index))}
+            amount={coinsAmount.externalCoin}
+            disabled={lockDetails.pool===""}
+            callbackFunc={handleFinalise({mainPoolAddress, tokenAddress: value, amount:Number(coinsAmount.externalCoin)}, lockDetails)}
+        />
     </div>
 }
 

@@ -59,10 +59,9 @@ export const handleCommit = (state, pool, setLockdetails) => async e=> {
     const {tokenAddress, mainPoolAddress, amount} = state
     const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
     const poolAddress = Object.keys(pool)[0]
-    console.log({poolAddress})
     const tokenDecimals = 100000000
     console.log(tokenAddress, poolAddress, amount)
-    const index = pool.index === "1" ? 1 : 0
+    const index = pool[poolAddress].index === "1" ? 1 : 0
     await poolContract.newLock(tokenAddress, poolAddress, index, amount*tokenDecimals)
     const ethAddress = await ethAPI.getAddress()
     const filter = poolContract.filters.NewLock(ethAddress, null, null, null)
@@ -75,6 +74,7 @@ export const handleCommit = (state, pool, setLockdetails) => async e=> {
 }
 
 export const handleFinalise = (state, lock) => async e => {
+    console.log("clicked...")
     const {mainPoolAddress} = state
     const poolContract = new ethers.Contract(mainPoolAddress, swipswapABI, await ethAPI.getSigner());
     await poolContract.fulfillLock(ethers.utils.toUtf8Bytes(""),lock.pool,0,"0x0000000000000000000000000000000000000000", lock.index, Number(lock.index))
@@ -178,3 +178,19 @@ export const supportedPools = [
     { value: '0x9E237f4a7AD90FfAFB0adEf703186F91428a6a38', label: 'BTC / FUSD', mainPoolAddress: "0x4b03Ac42133936ABf9c7C26c0aF3a08C27d56182" },
     { value: '0x0000000000000000000000000000000000000000', label: 'BTC / ETH', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
 ]
+
+export const toggleModalState = (setState) => () => {
+    console.log("----")
+    setState(prev => {
+        console.log(prev)
+        return !prev
+    })
+}
+
+export const makeQrURI = (coin, address, amount) => {
+    const coins = {
+        "BTC": "bitcoin",
+        "ETH": "ethereum",
+    }
+    return encodeURI(`${coins[coin]}:${address}?amount=${amount}&label=Swipswap_Payment&message=Swipswap_payment`)
+}

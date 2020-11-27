@@ -14,9 +14,12 @@
   },
   "dependencies": {
     "@billjs/event-emitter": "^1.0.3",
+    "bitcoinjs-lib": "5.2.0",
     "bnc-onboard": "1.14.0",
+    "bs58check": "2.1.2",
     "ethers": "^5.0.18",
     "next": "9.5.5",
+    "qrcode.react": "1.0.0",
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-select": "3.1.0",
