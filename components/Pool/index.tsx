@@ -15,7 +15,7 @@ const initialState = {
     pool: supportedPools[0]
 }
 
-export default function Pool({ lightTheme, address, pool }){
+export default function Pool({ lightTheme, address, pool, theme }){
     const [state, setState] = useState(initialState)
     // const [pool, setPool] = useState(supportedPools[0])
     const {label, value, mainPoolAddress} = pool
@@ -52,7 +52,7 @@ export default function Pool({ lightTheme, address, pool }){
 									<FormInput
 										classname='mt-3'
 										inputStyle={`w-full`}
-										lightTheme={lightTheme}
+										theme={theme}
 										label="Pubkey"
 										value={state.pubkey} 
 										onChange={handleChange(setState)}
@@ -63,7 +63,7 @@ export default function Pool({ lightTheme, address, pool }){
 									<FormInput
 										classname=''
 										inputStyle={'w-3/5 text-right'}
-										lightTheme={lightTheme}
+										theme={theme}
 										label="Amount"
 										value={state.amount} 
 										onChange={handleChange(setState)}

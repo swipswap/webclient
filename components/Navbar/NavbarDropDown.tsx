@@ -1,6 +1,6 @@
 export default function NavDropDownMenu() {
   return (
-     <div className={`absolute group mt-16 right-0 mr-8 tablets:w-1/12 tablet:p-4 rounded-2xl p-3 bg-white z-20`}>
+     <div className={`absolute group top-0 mt-10 md:mt-12 right-0 rounded-2xl px-6 p-3 bg-white z-20`}>
        <div className='flex'>
          <div className='pl-2 mt-2'>
           <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">

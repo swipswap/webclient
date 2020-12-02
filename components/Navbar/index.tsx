@@ -1,31 +1,34 @@
 import { useState } from 'react'
 import Link from "next/link"
 // import { connectMetamask, getAddress, getNetwork } from '../../scripts/eth';
-import { toast } from 'react-toastify';
-import Logo from "../Logo"
-import Button, { ToggleMode, NavMenu } from '../Button';
+// import { toast } from 'react-toastify';
+import { ToggleMode, NavMenu, Btn } from '../Button';
 
-export { default as NavbarDropDown } from './NavbarDropDown'
+import  NavbarDropDown from './NavbarDropDown'
+import { formatConnected } from '../handlers';
 
-export default function Navbar({ menuOpen, toggleMenu, lightTheme, setTheme, setAddress, address }) {
-	const [ethAddress, setEthAddress] = useState("")
-  const [ethNetwork, setEthNetwork] = useState("")
+export default function Navbar({setAddress, currentTheme, address, theme, setTheme }) {
+
+  const [menuOpen, setMenuOpen] = useState(false)
 	return (
-		<header className='absolute lg:px-10 lg:w-full'>
-      <nav className='flex items-center justify-between pt-4'>
-        <Link href="/">
-          <a >
-            <Logo lightTheme={lightTheme} classname="h-6 md:h-10 md:mb-2"/>
-          </a>
-        </Link>
-        <div>
-          <span className='flex flex-wrap items-center'>
-            <Button lightTheme={lightTheme} setAddress={setAddress} address={address}/>
-            <ToggleMode lightTheme={lightTheme} setTheme={setTheme}/>
-            <NavMenu lightTheme={lightTheme} menuOpen={menuOpen} toggleMenu={toggleMenu}/>
-          </span>
-        </div>			
-      </nav>
+		<header className='absolute top-0 left-0 h-16 md:h-20 w-full px-2 md:px-20 flex flex-wrap items-center justify-between'>
+      <Link href="/">
+        <a>
+          <img src="/logo.png" alt="swipswap logo" className="h-6 md:h-10" />
+        </a>
+      </Link>
+        <span className='relative flex flex-wrap items-center justify-between w-210 md:w-300'>
+          <Btn
+            disabled={!!address}
+            handleClick={setAddress}
+            theme={theme.headerBtn}
+            btnText={formatConnected(address)}
+            className="h-6 md:h-10 w-32 md:w-40"
+          />
+          <ToggleMode currentTheme={currentTheme} theme={theme} setTheme={setTheme}/>
+          <NavMenu lightTheme={theme} menuOpen={menuOpen} toggleMenu={() => setMenuOpen(!menuOpen)}/>
+          {menuOpen && <NavbarDropDown />}
+        </span>
 		</header>
 	);
 }

@@ -1,31 +1,45 @@
 import { useState } from 'react'
-import { handleFormConnect, supportedPools } from '../components/handlers'
+import { formatConnected, handleFormConnect, supportedPools } from '../components/handlers'
 import { ToastContainer } from 'react-toastify'
 import Layout from '../components/Layout'
 import Switch from '../components/Switch'
 import Pool from '../components/Pool'
 import Swap from '../components/Swap'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import Marquee from '../components/Marquee'
+import themes from '../components/Themes'
+
+
+const allThemes = {
+  lightTheme: "lightTheme",
+  darkTheme: "darkTheme"
+}
 
 export default function Home() {
   const [address, setAddress] = useState("")
-  const [lightTheme, setTheme] = useState(true)
+  const [currenctTheme, setCurrentTheme] = useState(allThemes.lightTheme)
   const [selectedPair, setSelectedPair] = useState(supportedPools[0])
   const [pool, setPool] = useState(supportedPools[0])
+  const theme = themes[currenctTheme]
+
+  const setTheme = () => currenctTheme === allThemes.lightTheme ? setCurrentTheme(allThemes.darkTheme) : setCurrentTheme(allThemes.lightTheme)
+  
   return (
-    <Layout lightTheme={lightTheme} setTheme={setTheme} setAddress={setAddress} address={address}>
-      <main className={`bg-white flex align-middle justify-center shadow-2xl flex-col ${lightTheme ? 'ring-swip-light' : 'ring-swip-secondary'} rounded-lg ring-2`}>
+    <Layout theme={theme}>
+        <Navbar currentTheme={currenctTheme} theme={theme} setTheme={setTheme} setAddress={handleFormConnect(setAddress)} address={address}/>
+          <Marquee />
         <Switch
-          lightTheme={lightTheme}
+          theme={theme}
           mainText="SWAP"
           otherText="POOL"
           handleClick={()=>{}}
-          MainComponent={<Swap selectedPair={selectedPair} address={address} lightTheme={lightTheme}/>}
-          OtherComponent={<Pool pool={pool} address={address} lightTheme={lightTheme}/>}
+          MainComponent={<Swap selectedPair={selectedPair} address={address} theme={theme} lightTheme={theme}/>}
+          OtherComponent={<Pool theme={theme} pool={pool} address={address} lightTheme={theme}/>}
           setSelectedPair={setSelectedPair}
           options={supportedPools}
           setPool={setPool}
         />
-      </main>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -38,6 +52,7 @@ export default function Home() {
         pauseOnHover
         className="z-50"
       />
+      <Footer currentTheme={currenctTheme} theme={theme}/>
     </Layout>
   )
 }

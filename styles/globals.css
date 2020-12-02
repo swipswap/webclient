@@ -35,6 +35,54 @@ input[type=number] {
   background-color: rgba(0, 0, 0, 0.699);
 }
 
+.light-bg {
+  background: conic-gradient(from 169.46deg at 47.78% 74.84%, rgba(207, 169, 223, 0.1) -52.01deg, rgba(232, 195, 248, 0.15) 6.56deg, rgba(247, 238, 251, 0.26) 50.63deg, #FFFFFF 160.45deg, rgba(207, 169, 223, 0.1) 307.99deg, rgba(232, 195, 248, 0.15) 366.56deg);
+}
+
+.marquee {
+ height: 50px;	
+ overflow: hidden;
+ position: relative;
+}
+.marquee .scroll {
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ margin: 0;
+ line-height: 50px;
+ text-align: center;
+ /* Starting position */
+ -moz-transform:translateX(100%);
+ -webkit-transform:translateX(100%);	
+ transform:translateX(100%);
+ /* Apply animation to this element */	
+ -moz-animation: scroll-left 15s linear infinite;
+ -webkit-animation: scroll-left 15s linear infinite;
+ animation: scroll-left 15s linear infinite;
+}
+/* Move it (define the animation) */
+@-moz-keyframes scroll-left {
+ 0%   { -moz-transform: translateX(100%); }
+ 100% { -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes scroll-left {
+ 0%   { -webkit-transform: translateX(100%); }
+ 100% { -webkit-transform: translateX(-100%); }
+}
+@keyframes scroll-left {
+ 0%   { 
+ -moz-transform: translateX(100%); /* Browser bug fix */
+ -webkit-transform: translateX(100%); /* Browser bug fix */
+ transform: translateX(100%); 		
+ }
+ 100% { 
+ -moz-transform: translateX(-100%); /* Browser bug fix */
+ -webkit-transform: translateX(-100%); /* Browser bug fix */
+ transform: translateX(-100%); 
+ }
+}
+
+
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */

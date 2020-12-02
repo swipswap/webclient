@@ -25,6 +25,7 @@ module.exports = {
       },
       backgroundImage: theme => ({
         'hero-light': `url('/swipswap-hero-light.svg')`,
+        'hero-bg-img': `url('/swipswap-hero-img.png')`,
         'hero-dark': `url('/swipswap-hero-dark.svg')`,
         'ens-hero-light': `url('https://ipfs.io/ipfs/QmUFE27rNMvwKtB1dVrP4njX7MucjEe2vg9RciM2Heveie/swipswap-hero-light.svg')`,
         'ens-hero-dark': `url('https://ipfs.io/ipfs/QmUFE27rNMvwKtB1dVrP4njX7MucjEe2vg9RciM2Heveie/swipswap-hero-dark.svg')`,
@@ -33,13 +34,17 @@ module.exports = {
         'hero-big': "85%",
         'hero-small': "65%",
         header: "15%",
-        "550": "550px"
+        "550": "550px",
       },
       width: {
         'hero-big': '40rem',
         'hero-mid': '35rem',
         'hero-txt': '290px',
-        "300": "300px"
+        "300": "300px",
+        "210": "210px"
+      },
+      borderRadius: {
+        "09": "0.9rem"
       },
       padding: {
         'hero-sml': '80px'
@@ -59,6 +64,9 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+      // borderWidth: ['responsive', 'hover', 'focus', 'active'],
+      // backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+  },
   plugins: [],
 }

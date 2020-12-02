@@ -1,9 +1,8 @@
-import { Fragment } from 'react'
-export default function SocialLinks({ lightTheme }) {
+export default function SocialLinks({ currentTheme }) {
 
   return (
     <div className='flex w-32 py-3 justify-between mx-auto'>
-      { lightTheme ? ( 
+      { currentTheme === "lightTheme" ? ( 
         <>
           <span>
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">

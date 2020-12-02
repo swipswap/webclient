@@ -1,8 +1,4 @@
 import { useState } from 'react'
-import { CloseDropDown } from '../Button'
-import Footer from '../Footer'
-import Hero from '../Hero'
-import Navbar, { NavbarDropDown } from '../Navbar'
 import { supportedPools } from '../handlers'
 
 const Question = () => {
@@ -31,27 +27,16 @@ const searchName=(value, setPools)=>{
   }
 }
 
-const Layout = ({ children, lightTheme, setTheme, setAddress, address }) => {
+const Layout = ({ theme, children }: {children:any, theme:Theme}) => {
   
   const [menuOpen, toggleMenu] = useState(false)
   const [pools, setPools] = useState(supportedPools)
   
 
   return (
-    <>
-      <div>
-        <Navbar menuOpen={menuOpen} toggleMenu={toggleMenu} lightTheme={lightTheme} setTheme={setTheme} setAddress={setAddress} address={address}/>
-        {
-          menuOpen && <NavbarDropDown />
-        }
-      </div>
-      <Hero lightTheme={lightTheme}>
-        <div className='pt-6 tablets:p-8 font-sans tablets:w-hero-big tablets:px-20 md:w-3/6 mx-auto mb-4'>
-          {children}
-          </div>
-        </Hero>
-      <Footer lightTheme={lightTheme}/>
-    </> 
+    <main className={`relative block h-screen pt-1 w-full bg-hero-bg-img ${theme.bgCol} bg-no-repeat bg-cover bg-center`}>
+        {children}
+    </main> 
   )
 }
 export default Layout

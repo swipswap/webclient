@@ -15,7 +15,7 @@ const initLockDetails = {
 	pool: "",
 }
 
-export default function Swap({ lightTheme, address, selectedPair }) {
+export default function Swap({ lightTheme, address, selectedPair, theme }) {
 
 	const { label, value, mainPoolAddress } = selectedPair
 	const [externalCoin, onChainCoin] = label.split(' / ')
@@ -25,8 +25,6 @@ export default function Swap({ lightTheme, address, selectedPair }) {
 	const [addressBalance, setAddressBalance] = useState(0)
 	const [modalIsOpen, setModalIsOpen] = useState(false)
 	const [coinsAmount, setCoinsAmount] = useState({ externalCoin: 0, onChainCoin: 0 })
-
-	const bgStyle = lightTheme ? 'bg-white' : 'bg-swip-deep'
 
 	useEffect(() => {
 		if (!address) return
@@ -48,22 +46,25 @@ export default function Swap({ lightTheme, address, selectedPair }) {
 	const pubkey = firstPool ? pools[firstPool].pubKey : ''
 
 	const isNotComitted = lockDetails.pool === ""
-	const textStyle = lightTheme ? 'text-black' : 'text-white'
+
+	const bgStyle = `bg-${theme.swap.bgPri}`
+	const textStyle = `text-${theme.swap.balTxt}`
+
 	return <div className="w-full shadow rounded">
 		<form onSubmit={(e) => { e.preventDefault() }}>
-			<div className={`h-52 ${lightTheme ? 'bg-swip-light-100' : 'bg-swip-deep-300'}`}>
+			<div className={`h-52 bg-${theme.swap.bgSec}`}>
 				<div className='px-10 pb-1'>
-					<div className='flex tablets:pl-6 pl-4'>
+					<div className='flex pl-2 tablets:pl-6'>
 						<FormInput
 							classname='mt-3'
 							inputStyle={'w-3/5 text-right'}
-							lightTheme={lightTheme}
+							theme={theme}
 							label="Send" value={coinsAmount.externalCoin}
 							onChange={handleValueChange(setCoinsAmount, ratio)}
 							name={'externalCoin'}
 							coin={externalCoin}
 						/>
-						<div className='pl-2 flex justify-right align-center flex-col mt-8'>
+						<div className='text-sm md:text-base pl-2 flex justify-right align-center flex-col mt-8'>
 							<p className={textStyle}>Balance</p>
 							<p className={textStyle}>0.00</p>
 						</div>
@@ -78,20 +79,20 @@ export default function Swap({ lightTheme, address, selectedPair }) {
 								</svg>
 						}
 					</div>
-					<div className='flex tablets:pl-6 pl-4'>
-						<FormInput classname='' inputStyle={'w-3/5 text-right'} lightTheme={lightTheme} label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} />
-						<div className='pl-2 flex justify-center align-center flex-col mt-4 pt-1'>
+					<div className='flex tablets:pl-6 pl-2'>
+						<FormInput classname='' inputStyle={'w-3/5 text-right'} theme={theme} label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} />
+						<div className='text-sm md:text-base pl-2 flex justify-center align-center flex-col mt-4 pt-1'>
 							<p className={textStyle}>Balance</p>
 							<p className={textStyle}>0.00</p>
 						</div>
 					</div>
-					<div className={`text-xs mb-3 mt-1 mx-auto ${textStyle} tablets:px-6 flex justify-between`}>
+					<div className={`text-xs pl-2 tablets:pl-6 mb-3 mt-1 mx-auto ${textStyle} tablets:px-6 flex justify-between`}>
 						<span>Rate: 1 {externalCoin} = {ratio} {onChainCoin}</span>
 						<span>Fee: 0.0001 ETH</span>
 					</div>
 				</div>
 				<div className={`${bgStyle} px-10`}>
-					<div className={`w-full flex py-8 justify-between`}>
+					<div className={`w-full flex py-4 md:py-8 justify-between`}>
 						<FormBtn
 							disabledStatus={lockDetails.pool !== ""}
 							classname={`w-2/5 h-10 tablets:ml-6 font-semibold ${lightTheme ? 'text-black hover:text-yellow-200 hover:bg-swip-deep' : 'text-yellow-200 hover:text-black hover:bg-swip-light-300'} bg-transparent-0 border-2 border-swip-light-300 rounded shadow`}
