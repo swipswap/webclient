@@ -1,24 +1,29 @@
 import { useState } from 'react'
-import { handleFormConnect } from '../components/handlers'
+import { handleFormConnect, supportedPools } from '../components/handlers'
 import { ToastContainer } from 'react-toastify'
 import Layout from '../components/Layout'
 import Switch from '../components/Switch'
-import Pool from './pool'
-import Swap from './swap'
+import Pool from '../components/Pool'
+import Swap from '../components/Swap'
 
 export default function Home() {
   const [address, setAddress] = useState("")
   const [lightTheme, setTheme] = useState(true)
+  const [selectedPair, setSelectedPair] = useState(supportedPools[0])
+  const [pool, setPool] = useState(supportedPools[0])
   return (
-    <Layout lightTheme={lightTheme} setTheme={setTheme}>
-      <main className="h-full w-full flex align-middle justify-center">
+    <Layout lightTheme={lightTheme} setTheme={setTheme} setAddress={setAddress} address={address}>
+      <main className={`bg-white flex align-middle justify-center shadow-2xl flex-col ${lightTheme ? 'ring-swip-light' : 'ring-swip-secondary'} rounded-lg ring-2`}>
         <Switch
           lightTheme={lightTheme}
           mainText="SWAP"
           otherText="POOL"
           handleClick={()=>{}}
-          MainComponent={<Swap address={address} getAddress={handleFormConnect(setAddress)}/>}
-          OtherComponent={<Pool address={address} getAddress={handleFormConnect(setAddress)}/>}
+          MainComponent={<Swap selectedPair={selectedPair} address={address} lightTheme={lightTheme}/>}
+          OtherComponent={<Pool pool={pool} address={address} lightTheme={lightTheme}/>}
+          setSelectedPair={setSelectedPair}
+          options={supportedPools}
+          setPool={setPool}
         />
       </main>
       <ToastContainer
