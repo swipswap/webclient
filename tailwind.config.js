@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       colors: {
         'accent-1': '#333',
+        'eth-blue': '#4E57AF',
         'swip-light': '#EACEF6',
         'swip-light-100': '#F9F0FC' ,
         'swip-light-300':'#A67AB9',
