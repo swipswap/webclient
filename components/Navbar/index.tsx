@@ -1,37 +1,34 @@
 import { useState } from 'react'
-import { updateStateItem } from './handlers'
-import { handleConnect } from '../handlers'
+import Link from "next/link"
+// import { connectMetamask, getAddress, getNetwork } from '../../scripts/eth';
+// import { toast } from 'react-toastify';
+import { ToggleMode, NavMenu, Btn } from '../Button';
 
-// import { 
-//   connectMetamask, 
-//   getAddress, 
-// } from '../../scripts/ethereum'
-import { toast } from 'react-toastify';
+import  NavbarDropDown from './NavbarDropDown'
+import { formatConnected } from '../handlers';
 
+export default function Navbar({setAddress, currentTheme, address, theme, setTheme }) {
 
-export default function Navbar() {
-  const [navbarProperties, setNavbarProperties] = useState({
-    expandedMenu: false, ethAddress: 'Connect', ethNetwork: ''
-  })
-
-	const handleConnection = async () => {
-    await handleConnect()
-		// const isConnected = await connectMetamask()
-		// if(isConnected){
-		// 	const address = await getAddress()
-		// 	setNavbarProperties(updateStateItem({ item: 'ethAddress', newValue: `${address.slice(0,6)}...${address.slice(38, 42)}`, prevState: navbarProperties }))
-    //   console.log('connected to metamask')
-		// }
-		// toast.error("Error connecting to your wallet")
-  }
-  
-
+  const [menuOpen, setMenuOpen] = useState(false)
 	return (
-    <div>
-      <button 
-      disabled={navbarProperties.ethAddress.indexOf('0x') !== -1}
-      className='text-xs text-center px-1 py-2 max-w-xs overflow-hidden lg:px-4 mr-6 lg:mr-0 leading-none border rounded text-white border-green-400 hover:border-transparent hover:bg-green-700 bg-green-500 md:text-lg'
-      onClick={handleConnection}>{navbarProperties.ethAddress}</button>
-    </div>
+		<header className='absolute top-0 left-0 h-16 md:h-20 w-full px-2 md:px-20 flex flex-wrap items-center justify-between'>
+      <Link href="/">
+        <a>
+          <img src="/logo.png" alt="swipswap logo" className="h-6 md:h-10" />
+        </a>
+      </Link>
+        <span className='relative flex flex-wrap items-center justify-between w-210 md:w-300'>
+          <Btn
+            disabled={!!address}
+            handleClick={setAddress}
+            theme={theme.headerBtn}
+            btnText={formatConnected(address)}
+            className="h-6 md:h-10 w-32 md:w-40"
+          />
+          <ToggleMode currentTheme={currentTheme} theme={theme} setTheme={setTheme}/>
+          <NavMenu lightTheme={theme} menuOpen={menuOpen} toggleMenu={() => setMenuOpen(!menuOpen)}/>
+          {menuOpen && <NavbarDropDown />}
+        </span>
+		</header>
 	);
 }
