@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { formatConnected, handleFormConnect, supportedPools } from '../components/handlers'
+import { handleFormConnect, supportedPools } from '../components/handlers'
 import { ToastContainer } from 'react-toastify'
 import Layout from '../components/Layout'
 import Switch from '../components/Switch'
@@ -27,7 +27,7 @@ export default function Home() {
   
   return (
     <Layout theme={theme}>
-        <Navbar currentTheme={currenctTheme} theme={theme} setTheme={setTheme} setAddress={handleFormConnect(setAddress)} address={address}/>
+        <Navbar theme={theme} setAddress={handleFormConnect(setAddress)} address={address}/>
           <Marquee />
         <Switch
           theme={theme}
@@ -52,7 +52,7 @@ export default function Home() {
         pauseOnHover
         className="z-50"
       />
-      <Footer currentTheme={currenctTheme} theme={theme}/>
+      <Footer setTheme={setTheme} theme={theme}/>
     </Layout>
   )
 }

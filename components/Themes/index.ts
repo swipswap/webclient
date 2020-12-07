@@ -1,5 +1,6 @@
 const themes : {[key: string]: Theme} = {
     lightTheme: {
+      currentTheme: "lightTheme",
       bgCol: "light-bg",
       headerBtn: {
         bg: "white",
@@ -32,8 +33,14 @@ const themes : {[key: string]: Theme} = {
       pool: {}
     },
     darkTheme: {
+      currentTheme: "darkTheme",
       bgCol: "bg-swip-deep-300",
-      headerBtn: {},
+      headerBtn: {
+        txt: "white",
+        hbg: "swip-light",
+        bg: "swip-light",
+        htxt: "white"
+      },
       footer: {
         bg: "swip-deep",
         txt: ""

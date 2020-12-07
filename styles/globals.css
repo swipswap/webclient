@@ -8,6 +8,12 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: conic-gradient(
+    from -45deg,
+    #FFFFFF,
+    rgba(213, 157, 237, 0.15) 100deg,
+    #FFFFFF
+  );
 }
 
 a {
@@ -36,7 +42,7 @@ input[type=number] {
 }
 
 .light-bg {
-  background: conic-gradient(from 169.46deg at 47.78% 74.84%, rgba(207, 169, 223, 0.1) -52.01deg, rgba(232, 195, 248, 0.15) 6.56deg, rgba(247, 238, 251, 0.26) 50.63deg, #FFFFFF 160.45deg, rgba(207, 169, 223, 0.1) 307.99deg, rgba(232, 195, 248, 0.15) 366.56deg);
+  background-color: transparent;
 }
 
 .marquee {

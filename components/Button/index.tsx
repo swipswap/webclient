@@ -14,7 +14,7 @@ export function Btn({ theme, btnText, handleClick, disabled, className="h-10 w-4
   return (
     <button
       disabled={disabled}
-      className={`transition duration-1000 ease-in-out font-semibold focus:outline-none outline-none shadow hover:shadow-md rounded-lg bg-${theme.bg} text-${theme.txt} hover:bg-${theme.hbg} hover:text-${theme.htxt} ${className}`}
+      className={`transition duration-1000 ease-in-out font-semibold focus:outline-none outline-none shadow hover:shadow-md p-1 rounded md:rounded-md bg-${theme.bg} text-${theme.txt} hover:bg-${theme.hbg} hover:text-${theme.htxt} ${className}`}
       onClick={handleClick}
     >
       {btnText}

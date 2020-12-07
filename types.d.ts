@@ -1,4 +1,5 @@
 type Theme = {
+    currentTheme: "lightTheme" | "darkTheme"
     bgCol: string;
     headerBtn: any;
     footer: any;
