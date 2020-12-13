@@ -24,6 +24,7 @@ module.exports = {
         "send-test": "#737373",
         "qr-border": "#77C2D4",
         "brownish": "#787878",
+        "pinkish": "rgba(193, 142, 216, 0.8)",
         
       },
       backgroundImage: theme => ({
@@ -49,7 +50,9 @@ module.exports = {
         "210": "210px"
       },
       borderRadius: {
-        "09": "0.9rem"
+        "09": "0.9rem",
+        "076": "0.76rem",
+        "035": "0.35rem",
       },
       padding: {
         'hero-sml': '80px'
@@ -65,7 +68,8 @@ module.exports = {
         "full": "100%",
       },
       fontSize: {
-        "2rem": "2rem"
+        "2rem": "2rem",
+        "tiny6": ["0.6rem", "20px"],
       },
     },
   },

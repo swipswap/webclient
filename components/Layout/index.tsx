@@ -34,7 +34,7 @@ const Layout = ({ theme, children }: {children:any, theme:Theme}) => {
   
 
   return (
-    <main className={`relative block h-screen pt-1 w-full ${theme.bgCol} bg-bg-img bg-no-repeat bg-cover bg-center`}>
+    <main className={` flex flex-col justify-between relative h-screen pt-1 w-full ${theme.bgCol} bg-bg-img bg-no-repeat bg-cover bg-center`}>
         {children}
     </main> 
   )

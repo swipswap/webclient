@@ -27,19 +27,20 @@ export default function Home() {
   
   return (
     <Layout theme={theme}>
-        <Navbar theme={theme} setAddress={handleFormConnect(setAddress)} address={address}/>
-          <Marquee />
-        <Switch
-          theme={theme}
-          mainText="SWAP"
-          otherText="POOL"
-          handleClick={()=>{}}
-          MainComponent={<Swap selectedPair={selectedPair} address={address} theme={theme} lightTheme={theme}/>}
-          OtherComponent={<Pool theme={theme} pool={pool} address={address} lightTheme={theme}/>}
-          setSelectedPair={setSelectedPair}
-          options={supportedPools}
-          setPool={setPool}
-        />
+      <Navbar theme={theme} setAddress={handleFormConnect(setAddress)} address={address}/>
+      <Marquee />
+      <Switch
+        theme={theme}
+        mainText="SWAP"
+        otherText="POOL"
+        handleClick={()=>{}}
+        MainComponent={<Swap selectedPair={selectedPair} address={address} theme={theme} lightTheme={theme}/>}
+        OtherComponent={<Pool theme={theme} pool={pool} address={address} lightTheme={theme}/>}
+        setSelectedPair={setSelectedPair}
+        options={supportedPools}
+        setPool={setPool}
+      />
+      <Footer setTheme={setTheme} theme={theme}/>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -52,7 +53,7 @@ export default function Home() {
         pauseOnHover
         className="z-50"
       />
-      <Footer setTheme={setTheme} theme={theme}/>
+      
     </Layout>
   )
 }

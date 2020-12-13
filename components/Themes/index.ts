@@ -21,7 +21,7 @@ const themes : {[key: string]: Theme} = {
         sliderBorder: "swip-light",
         sliderCasebg: "",
         sliderCaseTxt: "swip-deep-500",
-        sliderbg: "swip-light",
+        sliderbg: "pinkish",
         sliderTxt: "white",
         note: "swip-form-text",
       },
