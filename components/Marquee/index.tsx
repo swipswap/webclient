@@ -1,3 +1,6 @@
+import useWindowDimensions from "../hooks/useWindowDim"
+
+
 const supportedChains = [
   {
     img: "/eth.png",
@@ -36,6 +39,28 @@ const supportedChains = [
   },
 
 ]
+const supportedChainsMobile = [
+  {
+    img: "/eth.png",
+    text: "Mainnet",
+    alt: "Mainnet",
+  },
+  {
+    img: "/xdai.png",
+    text: "",
+    alt: "xdai",
+  },
+  {
+    img: "/bnb.png",
+    text: "",
+    alt: "Binance smart chain",
+  },
+  {
+    img: "/eth.png",
+    text: "Testnets",
+    alt: "testnets",
+  },
+]
 
 
 export default function Marquee(){
@@ -48,15 +73,20 @@ export default function Marquee(){
 }
 
 const Mrq = ({position}) => {
+  const {height, width} = useWindowDimensions()
+
+  const _supportedChains = width >= 769 ? supportedChains : supportedChainsMobile
+
+  console.log(height, width)
 return (
   <div className={`marquee0${position} w-full h-full`}>
-    <div className="w-full flex justify-between h-full items-center px-10">
+    <div className="w-full flex justify-between h-full items-center px-5 md:px-10">
       <span className="hidden md:inline-block">Support for the smartchains you already use</span>
       {
-        supportedChains.map(supportedChain => {
+        _supportedChains.map(supportedChain => {
           return (
-            <div className="h-6 w-20 flex flex-wrap items-center">
-              <img className="h-full mr-1" src={supportedChain.img} alt={supportedChain.alt} />
+            <div key={supportedChain.alt} className="h-6 w-24 md:w-20 flex flex-wrap text-xs md:text-base items-center">
+              <img className=" h-3 md:h-full mr-1" src={supportedChain.img} alt={supportedChain.alt} />
               <span>{supportedChain.text}</span>
             </div>
           )

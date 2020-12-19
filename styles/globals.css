@@ -46,7 +46,6 @@ input[type=number] {
 }
 
 .marquee-container {
-  /* border: 2px solid black; */
   overflow: hidden;
   white-space: nowrap;
 }

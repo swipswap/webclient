@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import dynamic from "next/dynamic";
 import { handleFormConnect, supportedPools } from '../components/handlers'
 import { ToastContainer } from 'react-toastify'
 import Layout from '../components/Layout'
@@ -7,7 +8,6 @@ import Pool from '../components/Pool'
 import Swap from '../components/Swap'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import Marquee from '../components/Marquee'
 import themes from '../components/Themes'
 
 
@@ -15,6 +15,8 @@ const allThemes = {
   lightTheme: "lightTheme",
   darkTheme: "darkTheme"
 }
+
+const Marquee = dynamic(import('../components/Marquee'), { ssr: false })
 
 export default function Home() {
   const [address, setAddress] = useState("")
