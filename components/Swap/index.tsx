@@ -44,14 +44,14 @@ export default function Swap({ lightTheme, address, selectedPair, theme }) {
 	const firstPool = Object.keys(pools)[0]
 	const pubkey = firstPool ? pools[firstPool].pubKey : ''
 
-	const isNotComitted = lockDetails.pool === ""
+	// const isNotComitted = lockDetails.pool === ""
 
-	const bgStyle = `bg-${theme.swap.bgPri}`
-	const textStyle = `text-${theme.swap.balTxt}`
+	const bgStyle = `${theme.swap.bgPri}`
+	const textStyle = `${theme.swap.balTxt}`
 
 	return <div className="w-full">
 		<form onSubmit={(e) => { e.preventDefault() }}>
-			<div className={`h-52 bg-${theme.swap.bgSec}`}>
+			<div className={`h-52 ${theme.swap.bgSec}`}>
 				<div className='px-5 md:px-8'>
 					<FormField>
 						<FormInput
@@ -77,7 +77,7 @@ export default function Swap({ lightTheme, address, selectedPair, theme }) {
 						<FormInput classname='' inputStyle={'w-3/5 text-right'} theme={theme} label="Receive" value={coinsAmount.onChainCoin} onChange={handleValueChange(setCoinsAmount, ratio)} name={'onChainCoin'} coin={onChainCoin} />
 						<div className='w-4/12 text-xs md:text-sm pl-3 md:pl-6 pt-2 md:pt-1 flex justify-center align-center flex-col mt-4'>
 							<p className={textStyle}>Balance</p>
-							<p className={`${textStyle} opacity-50`}>0.00</p>
+							<p className={`${textStyle} opacity-50`}>{addressBalance > 0 ? String(addressBalance) : '0.00'}</p>
 						</div>
 					</FormField>
 					<div className={`w-full text-xs pl-2 tablets:pl-6 mb-3 mt-3 mx-auto ${textStyle} tablets:px-6 flex justify-between`}>

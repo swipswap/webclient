@@ -2,7 +2,14 @@ module.exports = {
   future: {
     removeDeprecatedGapUtilities: true,
   },
-  purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
+  purge: {
+    layers: ['components', 'utilities'],
+    content: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
+    // options: {
+    //   whitelist: [/bg-.+/, /text-.+/, /hover:bg-.+/, /hover:text-.+/],
+    // },
+  },
+  
   theme: {
     extend: {
       colors: {
