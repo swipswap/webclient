@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { formatConnected, handleFormConnect, supportedPools } from '../components/handlers'
+import dynamic from "next/dynamic";
+import { handleFormConnect, supportedPools } from '../components/handlers'
 import { ToastContainer } from 'react-toastify'
 import Layout from '../components/Layout'
 import Switch from '../components/Switch'
@@ -7,7 +8,6 @@ import Pool from '../components/Pool'
 import Swap from '../components/Swap'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import Marquee from '../components/Marquee'
 import themes from '../components/Themes'
 
 
@@ -15,6 +15,8 @@ const allThemes = {
   lightTheme: "lightTheme",
   darkTheme: "darkTheme"
 }
+
+const Marquee = dynamic(import('../components/Marquee'), { ssr: false })
 
 export default function Home() {
   const [address, setAddress] = useState("")
@@ -27,19 +29,20 @@ export default function Home() {
   
   return (
     <Layout theme={theme}>
-        <Navbar currentTheme={currenctTheme} theme={theme} setTheme={setTheme} setAddress={handleFormConnect(setAddress)} address={address}/>
-          <Marquee />
-        <Switch
-          theme={theme}
-          mainText="SWAP"
-          otherText="POOL"
-          handleClick={()=>{}}
-          MainComponent={<Swap selectedPair={selectedPair} address={address} theme={theme} lightTheme={theme}/>}
-          OtherComponent={<Pool theme={theme} pool={pool} address={address} lightTheme={theme}/>}
-          setSelectedPair={setSelectedPair}
-          options={supportedPools}
-          setPool={setPool}
-        />
+      <Navbar theme={theme} setAddress={handleFormConnect(setAddress)} address={address}/>
+      <Marquee />
+      <Switch
+        theme={theme}
+        mainText="SWAP"
+        otherText="POOL"
+        handleClick={()=>{}}
+        MainComponent={<Swap selectedPair={selectedPair} address={address} theme={theme} lightTheme={theme}/>}
+        OtherComponent={<Pool theme={theme} pool={pool} address={address} lightTheme={theme}/>}
+        setSelectedPair={setSelectedPair}
+        options={supportedPools}
+        setPool={setPool}
+      />
+      <Footer setTheme={setTheme} theme={theme}/>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -52,7 +55,7 @@ export default function Home() {
         pauseOnHover
         className="z-50"
       />
-      <Footer currentTheme={currenctTheme} theme={theme}/>
+      
     </Layout>
   )
 }

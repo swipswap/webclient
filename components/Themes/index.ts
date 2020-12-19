@@ -1,14 +1,15 @@
 const themes : {[key: string]: Theme} = {
     lightTheme: {
+      currentTheme: "lightTheme",
       bgCol: "light-bg",
       headerBtn: {
-        bg: "white",
-        txt: "swip-primary",
-        hbg: "swip-light",
-        htxt: "swip-primary"
+        bg: "bg-white",
+        txt: "text-swip-primary",
+        hbg: "hover:bg-swip-light",
+        htxt: "hover:text-swip-primary"
       },
       footer: {
-        bg: "white",
+        bg: "bg-white",
         txt: ""
       },
       swapForm: {
@@ -16,24 +17,30 @@ const themes : {[key: string]: Theme} = {
         bgSec: "swip-deep"
       },
       formSwitch: {
-        bgPri: "white",
-        sliderBorder: "swip-light",
+        bgPri: "bg-white",
+        sliderBorder: "border-swip-light",
         sliderCasebg: "",
-        sliderCaseTxt: "swip-deep-500",
-        sliderbg: "swip-light",
-        sliderTxt: "white",
-        note: "swip-form-text",
+        sliderCaseTxt: "text-swip-deep-500",
+        sliderbg: "bg-pinkish",
+        sliderTxt: "text-white",
+        note: "text-swip-form-text",
       },
       swap: {
-        balTxt: "black",
-        bgPri: "white",
-        bgSec: "swip-light-100",
+        balTxt: "text-black",
+        bgPri: "bg-white",
+        bgSec: "bg-swip-light-100",
       },
       pool: {}
     },
     darkTheme: {
+      currentTheme: "darkTheme",
       bgCol: "bg-swip-deep-300",
-      headerBtn: {},
+      headerBtn: {
+        txt: "white",
+        hbg: "swip-light",
+        bg: "swip-light",
+        htxt: "white"
+      },
       footer: {
         bg: "swip-deep",
         txt: ""

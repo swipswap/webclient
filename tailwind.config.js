@@ -2,7 +2,14 @@ module.exports = {
   future: {
     removeDeprecatedGapUtilities: true,
   },
-  purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
+  purge: {
+    layers: ['components', 'utilities'],
+    content: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
+    // options: {
+    //   whitelist: [/bg-.+/, /text-.+/, /hover:bg-.+/, /hover:text-.+/],
+    // },
+  },
+  
   theme: {
     extend: {
       colors: {
@@ -22,12 +29,16 @@ module.exports = {
         'swip-form-text': '#AAA9A9',
         "sessn-id": "#8e8484",
         "send-test": "#737373",
-        "qr-border": "77C2D4"
+        "qr-border": "#77C2D4",
+        "brownish": "#787878",
+        "pinkish": "rgba(193, 142, 216, 0.8)",
+        
       },
       backgroundImage: theme => ({
         'hero-light': `url('/swipswap-hero-light.svg')`,
         'hero-bg-img': `url('/swipswap-hero-img.png')`,
         'hero-dark': `url('/swipswap-hero-dark.svg')`,
+        'bg-img': `url('/bg-img.png')`,
         'ens-hero-light': `url('https://ipfs.io/ipfs/QmUFE27rNMvwKtB1dVrP4njX7MucjEe2vg9RciM2Heveie/swipswap-hero-light.svg')`,
         'ens-hero-dark': `url('https://ipfs.io/ipfs/QmUFE27rNMvwKtB1dVrP4njX7MucjEe2vg9RciM2Heveie/swipswap-hero-dark.svg')`,
       }),
@@ -36,6 +47,7 @@ module.exports = {
         'hero-small': "65%",
         header: "15%",
         "550": "550px",
+        "7": "1.7rem",
       },
       width: {
         'hero-big': '40rem',
@@ -45,7 +57,9 @@ module.exports = {
         "210": "210px"
       },
       borderRadius: {
-        "09": "0.9rem"
+        "09": "0.9rem",
+        "076": "0.76rem",
+        "035": "0.35rem",
       },
       padding: {
         'hero-sml': '80px'
@@ -61,7 +75,8 @@ module.exports = {
         "full": "100%",
       },
       fontSize: {
-        "2rem": "2rem"
+        "2rem": "2rem",
+        "tiny6": ["0.6rem", "20px"],
       },
     },
   },
