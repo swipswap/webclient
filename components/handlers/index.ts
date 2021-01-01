@@ -1,7 +1,6 @@
 import { swipswapABI, swipTokenABI } from "../../scripts/ABIs"
 import { ethAPI } from "../../scripts/ethereum"
 import { ethers } from 'ethers'
-import { toast } from "react-toastify"
 
 export const handleChange = (setState) => e => {
     const { name, value } = e.target
@@ -147,9 +146,10 @@ export const handleConnect = async () => {
     }
 }
 
-export const handleFormConnect = (callback) => async () => {
+export const handleFormConnect = (setAddress, setNetwork=(network)=>{}) => async () => {
     await ethAPI.connect()
-    callback(await ethAPI.getAddress())
+    setAddress(await ethAPI.getAddress())
+    setNetwork(await ethAPI.getNetwork())
 }
 
 export const loadPool = async (mainPoolAddress: string) => {
@@ -225,10 +225,29 @@ export const formatConnected = (address: string) => {
     return formated
 }
 
-export const supportedPools = [
-    { value: '0x9E237f4a7AD90FfAFB0adEf703186F91428a6a38', label: 'BTC / FUSD', mainPoolAddress: "0x4b03Ac42133936ABf9c7C26c0aF3a08C27d56182" },
-    { value: '0x0000000000000000000000000000000000000000', label: 'BTC / ETH', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
-]
+export const supportedPools = (network:string="") => {
+    const pools = {
+        goerli:[
+            { value: '0xd966C2fdA4a2AB67FB72F30E82acE717Bb051Eb9', label: 'BTC / FUSD', mainPoolAddress: "0xeB1ef5177AA5f59527C5e774330cab340982753f" },
+            { value: '0x0000000000000000000000000000000000000000', label: 'BTC / gETH', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
+        ],
+        binance:[
+            { value: '0xA21F1ECFe7D699c6a9b3287D12d5306eaC0eBcF6', label: 'BTC / FUSD', mainPoolAddress: "0xc0e013b0D5ec6A20020922886ACBd9fCf70C2FE0" },
+            { value: '0x0000000000000000000000000000000000000000', label: 'BTC / BNB', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
+        ],
+        "":[
+            { value: '0xDccc8028CFB3f8d489719bBFC7389b00b3D4AFC3', label: 'BTC / FUSD', mainPoolAddress: "0x9E237f4a7AD90FfAFB0adEf703186F91428a6a38" },
+            { value: '0x0000000000000000000000000000000000000000', label: 'BTC / ETH', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
+        ],
+        "unknown":[
+            { value: '0xDccc8028CFB3f8d489719bBFC7389b00b3D4AFC3', label: 'BTC / FUSD', mainPoolAddress: "0x9E237f4a7AD90FfAFB0adEf703186F91428a6a38" },
+            { value: '0x0000000000000000000000000000000000000000', label: 'BTC / ETH', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
+        ],
+    }
+    return (
+        pools[network]
+    )
+}
 
 export const toggleModalState = (setState) => () => {
     console.log("----")

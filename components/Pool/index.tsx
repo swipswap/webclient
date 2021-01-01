@@ -17,7 +17,8 @@ const initialState = {
 export default function Pool({ lightTheme, address, pool, theme }){
     const [state, setState] = useState(initialState)
     // const [pool, setPool] = useState(supportedPools[0])
-    const {label, value, mainPoolAddress} = pool
+	const {label, value, mainPoolAddress} = pool
+	console.log({label, value, mainPoolAddress})
     const [currentAllowance, setAllowance] = useState(0)
 		const [addressBalance, setAddressBalance] = useState(0)
 		
