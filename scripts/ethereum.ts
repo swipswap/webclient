@@ -55,6 +55,11 @@ export default class ETHAPI{
     }
   }
 
+  async getNetwork() {
+    const net = (await (await this.provider).getNetwork()).name
+    return net
+  }
+
   toBigNumber (number: string) {
     return ethers.utils.parseEther(number)
   }
