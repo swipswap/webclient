@@ -229,7 +229,7 @@ export const supportedPools = (network:string="") => {
     const pools = {
         goerli:[
             { value: '0xd966C2fdA4a2AB67FB72F30E82acE717Bb051Eb9', label: 'BTC / FUSD', mainPoolAddress: "0xeB1ef5177AA5f59527C5e774330cab340982753f" },
-            { value: '0x0000000000000000000000000000000000000000', label: 'BTC / gETH', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
+            { value: '0x0000000000000000000000000000000000000000', label: 'BTC / ETH', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
         ],
         binance:[
             { value: '0xA21F1ECFe7D699c6a9b3287D12d5306eaC0eBcF6', label: 'BTC / FUSD', mainPoolAddress: "0xc0e013b0D5ec6A20020922886ACBd9fCf70C2FE0" },
