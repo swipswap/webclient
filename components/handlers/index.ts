@@ -228,7 +228,7 @@ export const formatConnected = (address: string) => {
 export const supportedPools = (network:string="") => {
     const pools = {
         goerli:[
-            { value: '0xd966C2fdA4a2AB67FB72F30E82acE717Bb051Eb9', label: 'BTC / FUSD', mainPoolAddress: "0xeB1ef5177AA5f59527C5e774330cab340982753f" },
+            { value: '0x3a683E2bDd2c08C971c96D87F5a13b08261b7af9', label: 'BTC / FUSD', mainPoolAddress: "0x9857a9FF0D7BcF3D6Bf3A0371E123d0FA7905f89" },
             { value: '0x0000000000000000000000000000000000000000', label: 'BTC / ETH', mainPoolAddress: "0x0000000000000000000000000000000000000000" },
         ],
         binance:[
